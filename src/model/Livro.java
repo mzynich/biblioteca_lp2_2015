@@ -6,6 +6,7 @@ package model;
  */
 public class Livro {
 
+    private int id;
     private String ISBN, nome, autor, editora;
     private int ano;
 
@@ -16,7 +17,24 @@ public class Livro {
         this.editora = editora;
         this.ano = ano;
     }
+    
+    public Livro(int id,String ISBN, String nome, String autor, String editora, int ano) {
+        this.id = id;
+        this.ISBN = ISBN;
+        this.nome = nome;
+        this.autor = autor;
+        this.editora = editora;
+        this.ano = ano;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     /**
      * @return the ISBN
      */

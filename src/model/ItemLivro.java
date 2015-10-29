@@ -5,7 +5,7 @@ package model;
  * @author mzynich
  */
 public class ItemLivro {
-
+    private int id;
     private Livro livro;
     private int quantidadeTotal, quantidadeDisponivel;
 
@@ -17,6 +17,25 @@ public class ItemLivro {
             this.quantidadeTotal = quantidade;
             this.quantidadeDisponivel = quantidade;
         }
+    }
+    
+    public ItemLivro(int id,Livro livro, int quantidade) {
+        this.id = id;
+        if (livro != null) {
+            this.livro = livro;
+        }
+        if (quantidade >= 0) {
+            this.quantidadeTotal = quantidade;
+            this.quantidadeDisponivel = quantidade;
+        }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Livro getLivro() {

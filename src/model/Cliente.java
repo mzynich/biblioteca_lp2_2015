@@ -8,7 +8,7 @@ import biblioteca.Biblioteca;
  * @author mzynich
  */
 public class Cliente {
-
+    private int id;
     private String matricula, nome, telefone;
     private ArrayList<Emprestimo> emprestimosAtuais;
 
@@ -17,6 +17,22 @@ public class Cliente {
         this.nome = nome;
         this.telefone = telefone;
         this.emprestimosAtuais = new ArrayList<Emprestimo>(Biblioteca.limiteEmprestimos);
+    }
+    
+    public Cliente(int id, String matricula, String nome, String telefone) {
+        this.id = id;
+        this.matricula = matricula;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.emprestimosAtuais = new ArrayList<Emprestimo>(Biblioteca.limiteEmprestimos);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMatricula() {

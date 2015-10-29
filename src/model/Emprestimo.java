@@ -14,11 +14,13 @@ import org.joda.time.Days;
  */
 public class Emprestimo {
 
+    private int id;
     private Cliente cliente;
     private ItemLivro itemLivro;
     private DateTime dataEmprestimo, dataDevolucao, devolucaoEfetiva;
     private int diasAtraso;
-
+    private boolean ativo;
+    
     public Emprestimo(Cliente cliente, ItemLivro itemLivro) {
         this.cliente = cliente;
         this.itemLivro = itemLivro;
@@ -26,8 +28,36 @@ public class Emprestimo {
         this.dataDevolucao = calculaDataDevolucao();
         this.devolucaoEfetiva = null;
         this.diasAtraso = 0;
+        this.ativo = true;
+    }
+    
+    public Emprestimo(int id,Cliente cliente, ItemLivro itemLivro){
+        this.id = id;
+        this.cliente = cliente;
+        this.itemLivro = itemLivro;
+        this.dataEmprestimo = new DateTime();
+        this.dataDevolucao = calculaDataDevolucao();
+        this.devolucaoEfetiva = null;
+        this.diasAtraso = 0;
+        this.ativo = true;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+    
     public Cliente getCliente() {
         return cliente;
     }
