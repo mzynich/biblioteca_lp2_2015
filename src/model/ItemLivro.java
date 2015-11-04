@@ -29,6 +29,19 @@ public class ItemLivro {
             this.quantidadeDisponivel = quantidade;
         }
     }
+    
+    public ItemLivro(int id,Livro livro, int quantidadeDisponivel, int quantidadeTotal) {
+        this.id = id;
+        if (livro != null) {
+            this.livro = livro;
+        }
+        if (quantidadeTotal >= 0) {
+            this.quantidadeTotal = quantidadeTotal;
+            if(quantidadeDisponivel>=0 && quantidadeDisponivel<=quantidadeTotal){
+                this.quantidadeDisponivel = quantidadeDisponivel;
+            }
+        }
+    }
 
     public int getId() {
         return id;

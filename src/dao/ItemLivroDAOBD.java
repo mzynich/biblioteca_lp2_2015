@@ -6,7 +6,7 @@
 package dao;
 
 import banco.ConnectionFactory;
-import interfaces.LivroDAO;
+import interfaces.ItemLivroDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,34 +15,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.ItemLivro;
 import model.Livro;
 
 /**
  *
  * @author 631420375
  */
-public class LivroDAOBD implements LivroDAO {
+public class ItemLivroDAOBD implements ItemLivroDAO {
 
     private Connection conexao;
     private PreparedStatement comando;
 
     @Override
-    public void inserir(Livro livro) {
+    public void inserir(ItemLivro itemLivro) {
         int id = 0;
 
         try {
-            String sql = "INSERT INTO livro(isbn,nome,autor,editora,ano) VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO itemLivro(codLivro,quantidadeTotal,quantidadeDisponivel) VALUES(?,?,?)";
             conectarObtendoId(sql);
-            comando.setString(1, livro.getISBN());
-            comando.setString(2, livro.getNome());
-            comando.setString(3, livro.getAutor());
-            comando.setString(4, livro.getEditora());
-            comando.setInt(5, livro.getAno());
+            comando.setInt(1, itemLivro.getLivro().getId());
+            comando.setInt(2, itemLivro.getQuantidadeTotal());
+            comando.setInt(3, itemLivro.getQuantidadeDisponivel());
             comando.executeUpdate();
             ResultSet resultado = comando.getGeneratedKeys();
             if (resultado.next()) {
                 id = resultado.getInt(1);
-                livro.setId(id);
+                itemLivro.setId(id);
             }
 
         } catch (SQLException ex) {
@@ -53,11 +52,11 @@ public class LivroDAOBD implements LivroDAO {
     }
 
     @Override
-    public void deletar(Livro livro) {
+    public void deletar(ItemLivro itemLivro) {
         try {
-            String sql = "DELETE FROM livro WHERE id = ?";
+            String sql = "DELETE FROM itemLivro WHERE id = ? CASCADE";
             conectar(sql);
-            comando.setInt(1, livro.getId());
+            comando.setInt(1, itemLivro.getId());
             comando.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,32 +66,36 @@ public class LivroDAOBD implements LivroDAO {
     }
 
     @Override
-    public void atualizar(Livro livro) {
+    public void atualizar(ItemLivro itemLivro) {
         try {
-            String sql = "UPDATE livro SET isbn=? ,nome=? ,autor=?,editora=?,ano=? WHERE id=?";
+            String sql = "UPDATE itemLivro SET codLivro=? ,quantidadeTotal=?, quantidadeDisponivel=? WHERE id=?";
             conectar(sql);
-            comando.setString(1, livro.getISBN());
-            comando.setString(2, livro.getNome());
-            comando.setString(3, livro.getAutor());
-            comando.setString(4, livro.getEditora());
-            comando.setInt(5, livro.getAno());
-            comando.setInt(6, livro.getId());
+            comando.setInt(1, itemLivro.getLivro().getId());
+            comando.setInt(2, itemLivro.getQuantidadeTotal());
+            comando.setInt(3, itemLivro.getQuantidadeDisponivel());
+            comando.setInt(4, itemLivro.getId());
             comando.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            fecharConexao();
         }
     }
 
     @Override
-    public List<Livro> listar() {
-        ArrayList<Livro> array = new ArrayList<>();
+    public List<ItemLivro> listar() {
+        ArrayList<ItemLivro> array = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM livro";
+            String sql = "SELECT * FROM itemLivro";
             conectar(sql);
             ResultSet r = comando.executeQuery();
             while (r.next()) {
-                array.add(new Livro(r.getInt("id"), r.getString("ISBN"), r.getString("nome"), r.getString("autor"),
-                        r.getString("editora"), r.getInt("ano")));
+                int id = r.getInt("id");
+                int qtdDisponivel = r.getInt("quantidadeDisponivel");
+                int qtdTotal = r.getInt("quantidadeTotal");
+                LivroDAOBD l = new LivroDAOBD();
+                Livro livro = l.procurarPorId(r.getInt("codLivro"));
+                array.add(new ItemLivro(id, livro, qtdDisponivel, qtdTotal));
             }
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
@@ -103,15 +106,18 @@ public class LivroDAOBD implements LivroDAO {
     }
 
     @Override
-    public Livro procurarPorId(int id) {
+    public ItemLivro procurarPorId(int id) {
         try {
-            String sql = "SELECT * FROM livro WHERE id=?";
+            String sql = "SELECT * FROM itemLivro WHERE id=?";
             conectar(sql);
             comando.setInt(1, id);
             ResultSet r = comando.executeQuery();
             if (r.next()) {
-                return new Livro(r.getInt("id"), r.getString("ISBN"), r.getString("nome"), r.getString("autor"),
-                        r.getString("editora"), r.getInt("ano"));
+                int qtdDisponivel = r.getInt("quantidadeDisponivel");
+                int qtdTotal = r.getInt("quantidadeTotal");
+                LivroDAOBD l = new LivroDAOBD();
+                Livro livro = l.procurarPorId(r.getInt("codLivro"));
+                return new ItemLivro(id, livro, qtdDisponivel, qtdTotal);
             }
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
@@ -122,15 +128,21 @@ public class LivroDAOBD implements LivroDAO {
     }
 
     @Override
-    public Livro procurarPorISBN(String ISBN) {
+    public ItemLivro procurarPorISBN(String ISBN) {
         try {
-            String sql = "SELECT * FROM livro WHERE isbn=?";
-            conectar(sql);
-            comando.setString(1, ISBN);
-            ResultSet r = comando.executeQuery();
-            if (r.next()) {
-                return new Livro(r.getInt("id"), r.getString("ISBN"), r.getString("nome"), r.getString("autor"),
-                        r.getString("editora"), r.getInt("ano"));
+            LivroDAOBD l = new LivroDAOBD();
+            Livro livro = l.procurarPorISBN(ISBN);
+            if (livro != null) {
+                String sql = "SELECT * FROM itemLivro WHERE codLivro=?";
+                conectar(sql);
+                comando.setInt(1, livro.getId());
+                ResultSet r = comando.executeQuery();
+                if (r.next()) {
+                    int idItem = r.getInt("id");
+                    int qtdDisponivel = r.getInt("quantidadeDisponivel");
+                    int qtdTotal = r.getInt("quantidadeTotal");
+                    return new ItemLivro(idItem, livro, qtdDisponivel, qtdTotal);
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,27 +153,30 @@ public class LivroDAOBD implements LivroDAO {
     }
 
     @Override
-    public List<Livro> procurarPorNome(String nome) {
-        List<Livro> array = new ArrayList<>();
-        String sql = "SELECT * FROM paciente WHERE nome LIKE ?";
-
+    public List<ItemLivro> procurarPorNome(String nome) {
+        List<ItemLivro> array = new ArrayList<>();
         try {
-            conectar(sql);
-            comando.setString(1, "%" + nome + "%");
-            ResultSet resultado = comando.executeQuery();
-
-            while (resultado.next()) {
-                array.add(new Livro(resultado.getInt("id"), resultado.getString("isbn"), resultado.getString("nome"), 
-                        resultado.getString("autor"), resultado.getString("editora"), resultado.getInt("ano")));
+            LivroDAOBD l = new LivroDAOBD();
+            List<Livro> listaLivro = l.procurarPorNome(nome);
+            if (listaLivro.size() > 0) {
+                for (Livro livro : listaLivro) {
+                    String sql = "SELECT * FROM itemLivro WHERE codLivro=?";
+                    conectar(sql);
+                    comando.setInt(1, livro.getId());
+                    ResultSet r = comando.executeQuery();
+                    while (r.next()) {
+                        int idItem = r.getInt("id");
+                        int qtdDisponivel = r.getInt("quantidadeDisponivel");
+                        int qtdTotal = r.getInt("quantidadeTotal");
+                        array.add(new ItemLivro(idItem, livro, qtdDisponivel, qtdTotal));
+                    }
+                }
             }
-            return array;
-
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             fecharConexao();
         }
-
         return (array);
     }
 
@@ -188,5 +203,4 @@ public class LivroDAOBD implements LivroDAO {
         }
 
     }
-
 }

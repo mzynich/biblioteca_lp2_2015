@@ -80,6 +80,8 @@ public class LivroDAOBD implements LivroDAO {
             comando.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            fecharConexao();
         }
     }
 
