@@ -3,7 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/biblioteca/Biblioteca.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/model/Livro.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/dao/ItemLivroDAOBD.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/model/Cliente.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/sqlBiblioteca.sql</file>
             <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/dao/LivroDAOBD.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/dao/EmprestimoDAOBD.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/model/ItemLivro.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/model/Emprestimo.java</file>
         </group>
     </open-files>
 </project-private>

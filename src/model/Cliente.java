@@ -10,13 +10,11 @@ import biblioteca.Biblioteca;
 public class Cliente {
     private int id;
     private String matricula, nome, telefone;
-    private ArrayList<Emprestimo> emprestimosAtuais;
 
     public Cliente(String matricula, String nome, String telefone) {
         this.matricula = matricula;
         this.nome = nome;
         this.telefone = telefone;
-        this.emprestimosAtuais = new ArrayList<Emprestimo>(Biblioteca.limiteEmprestimos);
     }
     
     public Cliente(int id, String matricula, String nome, String telefone) {
@@ -24,7 +22,6 @@ public class Cliente {
         this.matricula = matricula;
         this.nome = nome;
         this.telefone = telefone;
-        this.emprestimosAtuais = new ArrayList<Emprestimo>(Biblioteca.limiteEmprestimos);
     }
 
     public int getId() {
@@ -57,30 +54,5 @@ public class Cliente {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public void addEmprestimoAtual(Emprestimo emprestimo) {
-        if (emprestimo != null) {
-            this.emprestimosAtuais.add(emprestimo);
-        }
-    }
-
-    public void removeEmprestimoAtual(Emprestimo emprestimo) {
-        if (emprestimo != null) {
-            this.emprestimosAtuais.remove(emprestimo);
-        }
-    }
-
-    public ArrayList<Emprestimo> getEmprestimosAtuais() {
-        return emprestimosAtuais;
-    }
-
-    public Emprestimo getEmprestimoNomeLivro(String nomeLivro) {
-        for (Emprestimo e : emprestimosAtuais) {
-            if (e.getItemLivro().getLivro().getNome().equalsIgnoreCase(nomeLivro)) {
-                return e;
-            }
-        }
-        return null;
     }
 }

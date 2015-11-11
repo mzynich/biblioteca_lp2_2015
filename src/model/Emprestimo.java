@@ -5,7 +5,7 @@
  */
 package model;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.Days;
 
 /**
@@ -17,14 +17,14 @@ public class Emprestimo {
     private int id;
     private Cliente cliente;
     private ItemLivro itemLivro;
-    private DateTime dataEmprestimo, dataDevolucao, devolucaoEfetiva;
+    private LocalDate dataEmprestimo, dataDevolucao, devolucaoEfetiva;
     private int diasAtraso;
     private boolean ativo;
     
     public Emprestimo(Cliente cliente, ItemLivro itemLivro) {
         this.cliente = cliente;
         this.itemLivro = itemLivro;
-        this.dataEmprestimo = new DateTime();
+        this.dataEmprestimo = new LocalDate();
         this.dataDevolucao = calculaDataDevolucao();
         this.devolucaoEfetiva = null;
         this.diasAtraso = 0;
@@ -35,11 +35,22 @@ public class Emprestimo {
         this.id = id;
         this.cliente = cliente;
         this.itemLivro = itemLivro;
-        this.dataEmprestimo = new DateTime();
+        this.dataEmprestimo = new LocalDate();
         this.dataDevolucao = calculaDataDevolucao();
         this.devolucaoEfetiva = null;
         this.diasAtraso = 0;
         this.ativo = true;
+    }
+    
+    public Emprestimo(int id,Cliente cliente, ItemLivro itemLivro, LocalDate dataEmprestimo,LocalDate dataDevolucao,LocalDate devolucaoEfetiva,int diasAtraso,boolean ativo){
+        this.id = id;
+        this.cliente = cliente;
+        this.itemLivro = itemLivro;
+        this.dataEmprestimo = dataEmprestimo;
+        this.dataDevolucao = dataDevolucao;
+        this.devolucaoEfetiva = devolucaoEfetiva;
+        this.diasAtraso = diasAtraso;
+        this.ativo = ativo;
     }
 
     public int getId() {
@@ -66,23 +77,23 @@ public class Emprestimo {
         return itemLivro;
     }
 
-    public DateTime getDataEmprestimo() {
+    public LocalDate getDataEmprestimo() {
         return dataEmprestimo;
     }
 
-    public DateTime getDataDevolucao() {
+    public LocalDate getDataDevolucao() {
         return dataDevolucao;
     }
 
-    private DateTime calculaDataDevolucao() {
+    private LocalDate calculaDataDevolucao() {
         return dataEmprestimo.plusDays(7);
     }
 
-    public DateTime getDevolucaoEfetiva() {
+    public LocalDate getDevolucaoEfetiva() {
         return devolucaoEfetiva;
     }
 
-    public void setDevolucaoEfetiva(DateTime devolucaoEfetiva) {
+    public void setDevolucaoEfetiva(LocalDate devolucaoEfetiva) {
         this.devolucaoEfetiva = devolucaoEfetiva;
         calculaDiasAtraso();
     }
@@ -94,7 +105,7 @@ public class Emprestimo {
     //Calcula os dias de atraso, utilizando a diferença entre os dias de devolução efetiva e a devolução planejada. O método "daysBetween" leva em conta
     //o horário, por isso é necessário o método "withTimeAtStartOfDay()", para descartar estes campos
     private void calculaDiasAtraso() {
-        int i = Days.daysBetween(dataDevolucao.withTimeAtStartOfDay(), devolucaoEfetiva.withTimeAtStartOfDay()).getDays();
+        int i = Days.daysBetween(dataDevolucao, devolucaoEfetiva).getDays();
         if (i <= 0) {
             this.diasAtraso = 0;
         } else {
