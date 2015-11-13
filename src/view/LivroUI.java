@@ -12,9 +12,8 @@ import model.Emprestimo;
 import model.ItemLivro;
 import model.Livro;
 import org.joda.time.DateTime;
-import repositorio.RepositorioCliente;
-import repositorio.RepositorioEmprestimo;
-import repositorio.RepositorioLivro;
+import servico.ServicoCliente;
+import servico.ServicoItemLivro;
 import util.Console;
 import view.menu.LivroMenu;
 
@@ -24,14 +23,12 @@ import view.menu.LivroMenu;
  */
 public class LivroUI {
 
-    private RepositorioLivro listaLivro;
-    private RepositorioCliente listaCliente;
-    private RepositorioEmprestimo listaEmprestimo;
+    private ServicoItemLivro servicoItemLivro;
+    private ServicoCliente servicoCliente;
 
-    public LivroUI(RepositorioCliente listaCliente, RepositorioLivro listaLivro, RepositorioEmprestimo listaEmprestimo) {
-        this.listaCliente = listaCliente;
-        this.listaLivro = listaLivro;
-        this.listaEmprestimo = listaEmprestimo;
+    public LivroUI() {
+        servicoItemLivro = new ServicoItemLivro();
+        servicoCliente = new ServicoCliente();
     }
 
     public void executar() {
@@ -74,7 +71,7 @@ public class LivroUI {
 
     private void cadastrarLivro() {
         String ISBN = Console.scanString("ISBN: ");
-        if (listaLivro.pesquisaItemLivroISBN(ISBN) != null) {
+        if (servicoItemLivro.pesquisaItemLivroISBN(ISBN) != null) {
             System.out.println("Livro já existente no sistema");
         } else {
             String nome = Console.scanString("Nome: ");
@@ -84,7 +81,7 @@ public class LivroUI {
                 int ano = Console.scanInt("Ano: ");
                 int quantidade = Console.scanInt("Quantidade disponível: ");
                 Livro livro = new Livro(ISBN, nome, autor, editora, ano);
-                if (listaLivro.addItemLivro(new ItemLivro(livro, quantidade))) {
+                if (servicoItemLivro.addItemLivro(new ItemLivro(livro, quantidade))) {
                     System.out.println("Livro cadastrado com sucesso");
                 }
             } catch (InputMismatchException e) {
@@ -102,7 +99,7 @@ public class LivroUI {
                 + String.format("%-10s", "|EDITORA") + "\t"
                 + String.format("%-4s", "|ANO") + "\t"
                 + String.format("%-4s", "|QUANTIDADE"));
-        for (ItemLivro item : listaLivro.getListaLivros()) {
+        for (ItemLivro item : servicoItemLivro.getListaLivros()) {
             System.out.println(String.format("%-13s", item.getLivro().getISBN()) + "\t"
                     + String.format("%-30s", "|" + item.getLivro().getNome()) + "\t"
                     + String.format("%-20s", "|" + item.getLivro().getAutor()) + "\t"
@@ -114,22 +111,21 @@ public class LivroUI {
 
     public void emprestar() {
         String nomeLivro = Console.scanString("Nome do livro: ");
-        ItemLivro i = listaLivro.pesquisaItemLivroNome(nomeLivro);
+        ItemLivro i = servicoItemLivro.pesquisaItemLivroNome(nomeLivro);
         if (i == null) {
             System.out.println("Livro não existente no sistema");
         } else if (i.getQuantidadeDisponivel() <= 0) {
             System.out.println("Todos exemplares deste livro estão emprestados.");
         } else {
             String matriculaCliente = Console.scanString("Matricula do cliente: ");
-            Cliente cliente = listaCliente.pesquisaClienteMatricula(matriculaCliente);
+            Cliente cliente = servicoCliente.pesquisaClienteMatricula(matriculaCliente);
             if (cliente == null) {
                 System.out.println("Cliente não cadastrado no sistema");
-            } else if (cliente.getEmprestimosAtuais().size() >= Biblioteca.limiteEmprestimos) {
+            } else if (servicoCliente.getQtdEmprestimosAtuais(cliente) >= Biblioteca.limiteEmprestimos) {
                 System.out.println("Cliente possui " + Biblioteca.limiteEmprestimos + " livros emprestados.");
             } else {
                 Emprestimo emprestimo = new Emprestimo(cliente, i);
-                listaEmprestimo.addEmprestimo(emprestimo);
-                cliente.addEmprestimoAtual(emprestimo);
+                servicoItemLivro.addEmprestimo(emprestimo);
                 i.removerQtdLivroDisponivel(1);
                 System.out.println("Empréstimo efetuado com sucesso. Data de devolução: "
                         + emprestimo.getDataDevolucao().getDayOfMonth() + "/"

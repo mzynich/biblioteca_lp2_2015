@@ -20,7 +20,7 @@ public class Emprestimo {
     private LocalDate dataEmprestimo, dataDevolucao, devolucaoEfetiva;
     private int diasAtraso;
     private boolean ativo;
-    
+
     public Emprestimo(Cliente cliente, ItemLivro itemLivro) {
         this.cliente = cliente;
         this.itemLivro = itemLivro;
@@ -30,8 +30,8 @@ public class Emprestimo {
         this.diasAtraso = 0;
         this.ativo = true;
     }
-    
-    public Emprestimo(int id,Cliente cliente, ItemLivro itemLivro){
+
+    public Emprestimo(int id, Cliente cliente, ItemLivro itemLivro) {
         this.id = id;
         this.cliente = cliente;
         this.itemLivro = itemLivro;
@@ -41,8 +41,8 @@ public class Emprestimo {
         this.diasAtraso = 0;
         this.ativo = true;
     }
-    
-    public Emprestimo(int id,Cliente cliente, ItemLivro itemLivro, LocalDate dataEmprestimo,LocalDate dataDevolucao,LocalDate devolucaoEfetiva,int diasAtraso,boolean ativo){
+
+    public Emprestimo(int id, Cliente cliente, ItemLivro itemLivro, LocalDate dataEmprestimo, LocalDate dataDevolucao, LocalDate devolucaoEfetiva, int diasAtraso, boolean ativo) {
         this.id = id;
         this.cliente = cliente;
         this.itemLivro = itemLivro;
@@ -68,7 +68,7 @@ public class Emprestimo {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
-    
+
     public Cliente getCliente() {
         return cliente;
     }

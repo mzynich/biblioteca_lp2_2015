@@ -1,13 +1,11 @@
 package model;
 
-import java.util.ArrayList;
-import biblioteca.Biblioteca;
-
 /**
  *
  * @author mzynich
  */
 public class Cliente {
+
     private int id;
     private String matricula, nome, telefone;
 
@@ -16,7 +14,7 @@ public class Cliente {
         this.nome = nome;
         this.telefone = telefone;
     }
-    
+
     public Cliente(int id, String matricula, String nome, String telefone) {
         this.id = id;
         this.matricula = matricula;

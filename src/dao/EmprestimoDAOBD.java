@@ -124,16 +124,21 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
     @Override
     public Emprestimo procurarPorId(int id) {
         try {
-            String sql = "SELECT * FROM itemLivro WHERE id=?";
+            String sql = "SELECT * FROM emprestimo WHERE id=?";
             conectar(sql);
             comando.setInt(1, id);
             ResultSet r = comando.executeQuery();
             if (r.next()) {
-                int qtdDisponivel = r.getInt("quantidadeDisponivel");
-                int qtdTotal = r.getInt("quantidadeTotal");
-                LivroDAOBD l = new LivroDAOBD();
-                Livro livro = l.procurarPorId(r.getInt("codLivro"));
-                return new ItemLivro(id, livro, qtdDisponivel, qtdTotal);
+                ClienteDAOBD cliente = new ClienteDAOBD();
+                ItemLivroDAOBD itemLivro = new ItemLivroDAOBD();
+                Cliente c = cliente.procurarPorId(r.getInt("codCliente"));
+                ItemLivro livro = itemLivro.procurarPorId(r.getInt("codItemLivro"));
+                LocalDate dataEmprestimo = new LocalDate(r.getDate("dataEmprestimo"));
+                LocalDate dataDevolucao = new LocalDate(r.getDate("dataDevolucao"));
+                LocalDate devolucaoEfetiva = new LocalDate(r.getDate("devolucaoEfetiva"));
+                int diasAtraso = r.getInt("diasAtraso");
+                boolean ativo = r.getBoolean("ativo");
+                return new Emprestimo(id, c, livro, dataEmprestimo, dataDevolucao, devolucaoEfetiva, diasAtraso, ativo);
             }
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,18 +151,22 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
     @Override
     public Emprestimo procurarPorISBNLivro(String ISBN) {
         try {
-            LivroDAOBD l = new LivroDAOBD();
-            Livro livro = l.procurarPorISBN(ISBN);
-            if (livro != null) {
-                String sql = "SELECT * FROM itemLivro WHERE codLivro=?";
+            ItemLivroDAOBD l = new ItemLivroDAOBD();
+            ItemLivro itemLivro = l.procurarPorISBN(ISBN);
+            if (itemLivro != null) {
+                String sql = "SELECT * FROM emprestimo WHERE codItemLivro=?";
                 conectar(sql);
-                comando.setInt(1, livro.getId());
+                comando.setInt(1, itemLivro.getId());
                 ResultSet r = comando.executeQuery();
                 if (r.next()) {
-                    int idItem = r.getInt("id");
-                    int qtdDisponivel = r.getInt("quantidadeDisponivel");
-                    int qtdTotal = r.getInt("quantidadeTotal");
-                    return new ItemLivro(idItem, livro, qtdDisponivel, qtdTotal);
+                    ClienteDAOBD cliente = new ClienteDAOBD();
+                    Cliente c = cliente.procurarPorId(r.getInt("codCliente"));
+                    LocalDate dataEmprestimo = new LocalDate(r.getDate("dataEmprestimo"));
+                    LocalDate dataDevolucao = new LocalDate(r.getDate("dataDevolucao"));
+                    LocalDate devolucaoEfetiva = new LocalDate(r.getDate("devolucaoEfetiva"));
+                    int diasAtraso = r.getInt("diasAtraso");
+                    boolean ativo = r.getBoolean("ativo");
+                    return new Emprestimo(r.getInt("id"), c, itemLivro, dataEmprestimo, dataDevolucao, devolucaoEfetiva, diasAtraso, ativo);
                 }
             }
         } catch (SQLException ex) {
@@ -170,21 +179,25 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
 
     @Override
     public List<Emprestimo> procurarPorNomeCliente(String nome) {
-        List<ItemLivro> array = new ArrayList<>();
+        List<Emprestimo> array = new ArrayList<>();
         try {
-            LivroDAOBD l = new LivroDAOBD();
-            List<Livro> listaLivro = l.procurarPorNome(nome);
+            ItemLivroDAOBD l = new ItemLivroDAOBD();
+            List<ItemLivro> listaLivro = l.procurarPorNome(nome);
             if (listaLivro.size() > 0) {
-                for (Livro livro : listaLivro) {
-                    String sql = "SELECT * FROM itemLivro WHERE codLivro=?";
+                for (ItemLivro itemLivro : listaLivro) {
+                    String sql = "SELECT * FROM emprestimo WHERE codItemLivro=?";
                     conectar(sql);
-                    comando.setInt(1, livro.getId());
+                    comando.setInt(1, itemLivro.getId());
                     ResultSet r = comando.executeQuery();
                     while (r.next()) {
-                        int idItem = r.getInt("id");
-                        int qtdDisponivel = r.getInt("quantidadeDisponivel");
-                        int qtdTotal = r.getInt("quantidadeTotal");
-                        array.add(new ItemLivro(idItem, livro, qtdDisponivel, qtdTotal));
+                        ClienteDAOBD cliente = new ClienteDAOBD();
+                        Cliente c = cliente.procurarPorId(r.getInt("codCliente"));
+                        LocalDate dataEmprestimo = new LocalDate(r.getDate("dataEmprestimo"));
+                        LocalDate dataDevolucao = new LocalDate(r.getDate("dataDevolucao"));
+                        LocalDate devolucaoEfetiva = new LocalDate(r.getDate("devolucaoEfetiva"));
+                        int diasAtraso = r.getInt("diasAtraso");
+                        boolean ativo = r.getBoolean("ativo");
+                        array.add(new Emprestimo(r.getInt("id"), c, itemLivro, dataEmprestimo, dataDevolucao, devolucaoEfetiva, diasAtraso, ativo));
                     }
                 }
             }

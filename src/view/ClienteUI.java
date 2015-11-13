@@ -7,7 +7,7 @@ package view;
 
 import java.util.InputMismatchException;
 import model.Cliente;
-import repositorio.RepositorioCliente;
+import servico.ServicoCliente;
 import util.Console;
 import view.menu.ClienteMenu;
 
@@ -17,10 +17,10 @@ import view.menu.ClienteMenu;
  */
 public class ClienteUI {
 
-    private RepositorioCliente lista;
-
-    public ClienteUI(RepositorioCliente lista) {
-        this.lista = lista;
+    private ServicoCliente servicoCliente;
+    
+    public ClienteUI() {
+        servicoCliente = new ServicoCliente();
     }
 
     public void executar() {
@@ -54,16 +54,13 @@ public class ClienteUI {
 
     private void cadastrarCliente() {
         String matricula = Console.scanString("Matrícula: ");
-        if (lista.pesquisaClienteMatricula(matricula) != null) {
+        if (servicoCliente.pesquisaClienteMatricula(matricula) != null) {
             System.out.println("Cliente já existente no sistema");
         } else {
             String nome = Console.scanString("Nome: ");
             String telefone = Console.scanString("Telefone: ");
-            if (lista.addCliente(new Cliente(matricula, nome, telefone))) {
-                System.out.println("Cliente cadastrado com sucesso!");
-            } else {
-                System.out.println("Problema encontrado.");
-            }
+            servicoCliente.addCliente(new Cliente(matricula, nome, telefone));
+            System.out.println("Cliente adicionado com sucesso.");
         }
     }
 
@@ -72,25 +69,25 @@ public class ClienteUI {
         System.out.println(String.format("%-11s", "MATRÍCULA") + "\t"
                 + String.format("%-30s", "|NOME") + "\t"
                 + String.format("%-12s", "|TELEFONE"));
-        for (Cliente cliente : lista.getListaClientes()) {
+        for (Cliente cliente : servicoCliente.getListaClientes()) {
             System.out.println(String.format("%-11s", cliente.getMatricula()) + "\t"
                     + String.format("%-30s", "|" + cliente.getNome()) + "\t"
                     + String.format("%-12s", "|" + cliente.getTelefone()));
         }
 
     }
-    
-    private void editarCliente(){
+
+    private void editarCliente() {
         String matricula = Console.scanString("Matrícula: ");
-        Cliente c = lista.pesquisaClienteMatricula(matricula);
-        if(c !=null){
-            String nome= Console.scanString("Nome: ");
+        Cliente c = servicoCliente.pesquisaClienteMatricula(matricula);
+        if (c != null) {
+            String nome = Console.scanString("Nome: ");
             String telefone = Console.scanString("Telefone: ");
             c.setNome(nome);
             c.setTelefone(telefone);
+            servicoCliente.editarCliente(c);
             System.out.println("Alteração efetuada com sucesso.");
-        }
-        else{
+        } else {
             System.out.println("Cliente não encontrado.");
         }
     }

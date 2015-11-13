@@ -17,8 +17,8 @@ public class Livro {
         this.editora = editora;
         this.ano = ano;
     }
-    
-    public Livro(int id,String ISBN, String nome, String autor, String editora, int ano) {
+
+    public Livro(int id, String ISBN, String nome, String autor, String editora, int ano) {
         this.id = id;
         this.ISBN = ISBN;
         this.nome = nome;
@@ -34,7 +34,7 @@ public class Livro {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     /**
      * @return the ISBN
      */

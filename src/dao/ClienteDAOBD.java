@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Cliente;
-import model.Livro;
 
 /**
  *
@@ -77,7 +76,7 @@ public class ClienteDAOBD implements ClienteDAO {
             comando.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAOBD.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
+        } finally {
             fecharConexao();
         }
     }
@@ -141,8 +140,8 @@ public class ClienteDAOBD implements ClienteDAO {
 
         return (array);
     }
-    
-        @Override
+
+    @Override
     public Cliente procurarPorMatricula(String matricula) {
         try {
             String sql = "SELECT * FROM cliente WHERE matricula=?";
@@ -159,6 +158,21 @@ public class ClienteDAOBD implements ClienteDAO {
         }
         return null;
 
+    }
+
+    public int quantidadeEmprestimosAtuais(Cliente cliente) {
+        try{
+            String sql = "SELECT COUNT(*) FROM emprestimo WHERE codCliente=? AND ativo=true";
+            conectar(sql);
+            comando.setInt(1, cliente.getId());
+            ResultSet r = comando.executeQuery();
+            if(r.next()){
+                return r.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 
     public void conectar(String sql) throws SQLException {
@@ -184,5 +198,4 @@ public class ClienteDAOBD implements ClienteDAO {
         }
 
     }
-
 }

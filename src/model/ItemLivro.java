@@ -5,6 +5,7 @@ package model;
  * @author mzynich
  */
 public class ItemLivro {
+
     private int id;
     private Livro livro;
     private int quantidadeTotal, quantidadeDisponivel;
@@ -18,8 +19,8 @@ public class ItemLivro {
             this.quantidadeDisponivel = quantidade;
         }
     }
-    
-    public ItemLivro(int id,Livro livro, int quantidade) {
+
+    public ItemLivro(int id, Livro livro, int quantidade) {
         this.id = id;
         if (livro != null) {
             this.livro = livro;
@@ -29,15 +30,15 @@ public class ItemLivro {
             this.quantidadeDisponivel = quantidade;
         }
     }
-    
-    public ItemLivro(int id,Livro livro, int quantidadeDisponivel, int quantidadeTotal) {
+
+    public ItemLivro(int id, Livro livro, int quantidadeDisponivel, int quantidadeTotal) {
         this.id = id;
         if (livro != null) {
             this.livro = livro;
         }
         if (quantidadeTotal >= 0) {
             this.quantidadeTotal = quantidadeTotal;
-            if(quantidadeDisponivel>=0 && quantidadeDisponivel<=quantidadeTotal){
+            if (quantidadeDisponivel >= 0 && quantidadeDisponivel <= quantidadeTotal) {
                 this.quantidadeDisponivel = quantidadeDisponivel;
             }
         }
