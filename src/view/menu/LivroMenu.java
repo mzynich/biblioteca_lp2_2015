@@ -16,7 +16,7 @@ public class LivroMenu {
     public static final int OP_EMPRESTAR = 3;
     public static final int OP_DEVOLVER = 4;
     public static final int OP_EDITAR = 5;
-    public static final int OP_EDITAR_QUANTIDADE = 6;
+    public static final int OP_EXCLUIR = 6;
     public static final int OP_VOLTAR = 0;
 
     public static String getOpcoes() {
@@ -26,7 +26,7 @@ public class LivroMenu {
                 + "3- Emprestar Livro\n"
                 + "4- Devolver Livro\n"
                 + "5- Editar Livro\n"
-                + "6- Editar Quantidade\n"
+                + "6- Excluir Livro\n"
                 + "0- Voltar"
                 + "\n--------------------------------------");
     }

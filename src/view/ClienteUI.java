@@ -18,7 +18,7 @@ import view.menu.ClienteMenu;
 public class ClienteUI {
 
     private ServicoCliente servicoCliente;
-    
+
     public ClienteUI() {
         servicoCliente = new ServicoCliente();
     }
@@ -41,6 +41,9 @@ public class ClienteUI {
                     break;
                 case ClienteMenu.OP_EDITAR:
                     editarCliente();
+                    break;
+                case ClienteMenu.OP_EXCLUIR:
+                    excluirCliente();
                     break;
                 case ClienteMenu.OP_VOLTAR:
                     System.out.println("Retornando ao menu principal..");
@@ -67,11 +70,11 @@ public class ClienteUI {
     private void listaClientes() {
         System.out.println("-----------------------------\n");
         System.out.println(String.format("%-11s", "MATRÍCULA") + "\t"
-                + String.format("%-30s", "|NOME") + "\t"
+                + String.format("%-50s", "|NOME") + "\t"
                 + String.format("%-12s", "|TELEFONE"));
         for (Cliente cliente : servicoCliente.getListaClientes()) {
             System.out.println(String.format("%-11s", cliente.getMatricula()) + "\t"
-                    + String.format("%-30s", "|" + cliente.getNome()) + "\t"
+                    + String.format("%-50s", "|" + cliente.getNome()) + "\t"
                     + String.format("%-12s", "|" + cliente.getTelefone()));
         }
 
@@ -89,6 +92,15 @@ public class ClienteUI {
             System.out.println("Alteração efetuada com sucesso.");
         } else {
             System.out.println("Cliente não encontrado.");
+        }
+    }
+
+    private void excluirCliente() {
+        String matricula = Console.scanString("Matrícula: ");
+        Cliente c = servicoCliente.pesquisaClienteMatricula(matricula);
+        if (c != null) {
+            servicoCliente.excluir(c);
+            System.out.println("Cliente excluído com sucesso.");
         }
     }
 }

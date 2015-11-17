@@ -13,8 +13,9 @@ import model.Cliente;
  * @author mzynich
  */
 public class ServicoCliente {
+
     ClienteDAOBD clienteDAO;
-    
+
     public ServicoCliente() {
         clienteDAO = new ClienteDAOBD();
     }
@@ -38,5 +39,9 @@ public class ServicoCliente {
     public int getQtdEmprestimosAtuais(Cliente cliente) {
         return clienteDAO.quantidadeEmprestimosAtuais(cliente);
     }
-    
+
+    public void excluir(Cliente c) {
+        clienteDAO.deletar(c);
+    }
+
 }

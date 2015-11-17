@@ -5,8 +5,10 @@
  */
 package servico;
 
-import model.Emprestimo;
+import dao.ItemLivroDAOBD;
+import java.util.List;
 import model.ItemLivro;
+import model.Livro;
 
 /**
  *
@@ -14,24 +16,38 @@ import model.ItemLivro;
  */
 public class ServicoItemLivro {
 
-    public Object pesquisaItemLivroISBN(String ISBN) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private ItemLivroDAOBD itemLivroDAOBD;
+
+    public ServicoItemLivro() {
+        itemLivroDAOBD = new ItemLivroDAOBD();
+    }
+
+    public ItemLivro pesquisaItemLivroISBN(String ISBN) {
+        return itemLivroDAOBD.procurarPorISBN(ISBN);
     }
 
     public boolean addItemLivro(ItemLivro itemLivro) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        itemLivroDAOBD.inserir(itemLivro);
+        return true;
     }
 
-    public Iterable<ItemLivro> getListaLivros() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<ItemLivro> getListaLivros() {
+        return itemLivroDAOBD.listar();
     }
 
-    public ItemLivro pesquisaItemLivroNome(String nomeLivro) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<ItemLivro> pesquisaItemLivroNome(String nomeLivro) {
+        return itemLivroDAOBD.procurarPorNome(nomeLivro);
     }
 
-    public void addEmprestimo(Emprestimo emprestimo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void editaLivro(Livro l) {
+        //itemLivroDAOBD.
     }
-    
+
+    public void editaItemLivro(ItemLivro itemLivro) {
+        itemLivroDAOBD.atualizar(itemLivro);
+    }
+
+    public void excluiItemLivro(ItemLivro l) {
+        itemLivroDAOBD.deletar(l);
+    }
 }

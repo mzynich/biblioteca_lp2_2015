@@ -18,9 +18,9 @@ import java.util.logging.Logger;
 import model.Cliente;
 import model.Emprestimo;
 import model.ItemLivro;
-import model.Livro;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
+import servico.ServicoItemLivro;
+import util.Console;
 
 /**
  *
@@ -42,7 +42,11 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
             comando.setInt(2, emprestimo.getItemLivro().getId());
             comando.setDate(3, new java.sql.Date(emprestimo.getDataEmprestimo().toDate().getTime()));
             comando.setDate(4, new java.sql.Date(emprestimo.getDataDevolucao().toDate().getTime()));
-            comando.setDate(5, new java.sql.Date(emprestimo.getDevolucaoEfetiva().toDate().getTime()));
+            if (emprestimo.getDevolucaoEfetiva() != null) {
+                comando.setDate(5, new java.sql.Date(emprestimo.getDevolucaoEfetiva().toDate().getTime()));
+            } else {
+                comando.setDate(5, null);
+            }
             comando.setInt(6, emprestimo.getDiasAtraso());
             comando.setBoolean(7, emprestimo.isAtivo());
             comando.executeUpdate();
@@ -62,7 +66,7 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
     @Override
     public void deletar(Emprestimo emprestimo) {
         try {
-            String sql = "DELETE FROM emprestimo WHERE id = ? CASCADE";
+            String sql = "DELETE FROM emprestimo WHERE id = ?";
             conectar(sql);
             comando.setInt(1, emprestimo.getId());
             comando.executeUpdate();
@@ -82,9 +86,14 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
             comando.setInt(2, emprestimo.getItemLivro().getId());
             comando.setDate(3, new java.sql.Date(emprestimo.getDataEmprestimo().toDate().getTime()));
             comando.setDate(4, new java.sql.Date(emprestimo.getDataDevolucao().toDate().getTime()));
+            //if (emprestimo.getDevolucaoEfetiva() != null) {
             comando.setDate(5, new java.sql.Date(emprestimo.getDevolucaoEfetiva().toDate().getTime()));
+            /*} else {
+             comando.setDate(5, null);
+             }*/
             comando.setInt(6, emprestimo.getDiasAtraso());
             comando.setBoolean(7, emprestimo.isAtivo());
+            comando.setInt(8, emprestimo.getId());
             comando.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
@@ -209,14 +218,113 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
         return (array);
     }
 
-    @Override
-    public Emprestimo procurarPorMatriculaCliente(String matricula) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Emprestimo getEmprestimoClienteISBNLivro(Cliente cliente, String ISBN) {
+        try {
+            ItemLivro i = new ItemLivroDAOBD().procurarPorISBN(ISBN);
+            String sql = "SELECT * FROM emprestimo WHERE codCliente=? AND codItemLivro=? AND ativo=true";
+            conectar(sql);
+            comando.setInt(1, cliente.getId());
+            comando.setInt(2, i.getId());
+            ResultSet r = comando.executeQuery();
+            if (r.next()) {
+                LocalDate dataEmprestimo = new LocalDate(r.getDate("dataEmprestimo"));
+                LocalDate dataDevolucao = new LocalDate(r.getDate("dataDevolucao"));
+                LocalDate devolucaoEfetiva = new LocalDate(r.getDate("devolucaoEfetiva"));
+                int diasAtraso = r.getInt("diasAtraso");
+                boolean ativo = r.getBoolean("ativo");
+                return new Emprestimo(r.getInt("id"), cliente, i, dataEmprestimo, dataDevolucao, devolucaoEfetiva, diasAtraso, ativo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmprestimoDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            fecharConexao();
+        }
+        return null;
     }
 
     @Override
-    public List<Emprestimo> procurarPorNomeLivro(String nome) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void livrosMaisRetirados() {
+        System.out.println("-----------------------------\n");
+        System.out.println(String.format("%-50s", "Livro") + "\t"
+                + String.format("%-3s", "|Quantidade de empréstimos"));
+        try {
+            String sql = "SELECT livro.nome,COUNT(*) AS quantidade FROM emprestimo "
+                    + "INNER JOIN itemLivro ON (emprestimo.codItemLivro = itemLivro.id) "
+                    + "INNER JOIN livro ON (itemLivro.codLivro = livro.id) "
+                    + "GROUP BY nome,codItemLivro "
+                    + "ORDER BY quantidade DESC";
+            conectar(sql);
+            ResultSet r = comando.executeQuery();
+            while (r.next()) {
+                System.out.println(String.format("%-50s", r.getString(1)) + "\t"
+                        + String.format("%-3s", "|" + r.getInt(2)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmprestimoDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            fecharConexao();
+        }
+    }
+
+    public void clientesMaisRetiraramLivro() {
+        String livro = Console.scanString("Nome do livro: ");
+        List<ItemLivro> lista = new ServicoItemLivro().pesquisaItemLivroNome(livro);
+        if (lista.size() <= 0) {
+            System.out.println("Livro não existente no sistema");
+        } else {
+            System.out.println(String.format("%-10s", "CÓDIGO") + "\t"
+                    + String.format("%-50s", "|NOME") + "\t");
+            for (int i = 0; i < lista.size(); i++) {
+                System.out.println(String.format("%-13s", i) + "\t"
+                        + String.format("%-30s", "|" + lista.get(i).getLivro().getNome()));
+            }
+            int opcao = Console.scanInt("Digite o código do livro ou -1 para cancelar: ");
+            if (opcao != -1 && opcao < lista.size()) {
+                System.out.println("-----------------------------\n");
+                System.out.println(String.format("%-50s", "Cliente") + "\t"
+                        + String.format("%-3s", "|Quantidade de empréstimos"));
+                try {
+                    String sql = "SELECT cliente.nome, COUNT(*) AS quantidade FROM emprestimo "
+                            + "INNER JOIN cliente ON (emprestimo.codCliente = cliente.id)"
+                            + "INNER JOIN itemLivro ON (emprestimo.codItemLivro = itemLivro.id) "
+                            + "INNER JOIN livro ON (itemLivro.codLivro = livro.id) AND livro.nome = ?"
+                            + "GROUP BY cliente.nome ORDER BY quantidade DESC";
+                    conectar(sql);
+                    comando.setString(1, lista.get(opcao).getLivro().getNome());
+                    ResultSet r = comando.executeQuery();
+                    while (r.next()) {
+                        System.out.println(String.format("%-50s", r.getString(1)) + "\t"
+                                + String.format("%-3s", "|" + r.getInt(2)));
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(EmprestimoDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    fecharConexao();
+                }
+            }
+        }
+
+    }
+
+    public void clientesMaisAtrasaram() {
+        try {
+            String sql = "SELECT cliente.nome,COUNT(*) AS quantidade FROM emprestimo INNER JOIN cliente ON (emprestimo.codCliente = cliente.id) "
+                    + "AND devolucaoEfetiva-dataDevolucao>0 "
+                    + "GROUP BY cliente.nome "
+                    + "ORDER BY quantidade DESC";
+            conectar(sql);
+            ResultSet r = comando.executeQuery();
+            System.out.println(String.format("%-50s", "Cliente") + "\t"
+                    + String.format("%-3s", "|" + "Total de atrasos"));
+            while (r.next()) {
+                System.out.println(String.format("%-50s", r.getString(1)) + "\t"
+                        + String.format("%-3s", "|" + r.getInt(2)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmprestimoDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            fecharConexao();
+        }
     }
 
     public void conectar(String sql) throws SQLException {
@@ -236,10 +344,13 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
             }
             if (conexao != null) {
                 conexao.close();
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LivroDAOBD.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+
 }

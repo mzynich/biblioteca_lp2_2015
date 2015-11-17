@@ -80,7 +80,7 @@ public class LivroDAOBD implements LivroDAO {
             comando.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
+        } finally {
             fecharConexao();
         }
     }
@@ -145,7 +145,7 @@ public class LivroDAOBD implements LivroDAO {
     @Override
     public List<Livro> procurarPorNome(String nome) {
         List<Livro> array = new ArrayList<>();
-        String sql = "SELECT * FROM paciente WHERE nome LIKE ?";
+        String sql = "SELECT * FROM livro WHERE nome ILIKE ?";
 
         try {
             conectar(sql);
@@ -153,7 +153,7 @@ public class LivroDAOBD implements LivroDAO {
             ResultSet resultado = comando.executeQuery();
 
             while (resultado.next()) {
-                array.add(new Livro(resultado.getInt("id"), resultado.getString("isbn"), resultado.getString("nome"), 
+                array.add(new Livro(resultado.getInt("id"), resultado.getString("isbn"), resultado.getString("nome"),
                         resultado.getString("autor"), resultado.getString("editora"), resultado.getInt("ano")));
             }
             return array;

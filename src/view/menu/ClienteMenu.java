@@ -13,7 +13,8 @@ public class ClienteMenu {
 
     public static final int OP_CADASTRAR = 1;
     public static final int OP_LISTAR_TODOS = 2;
-    public static final int OP_EDITAR=3;
+    public static final int OP_EDITAR = 3;
+    public static final int OP_EXCLUIR = 4;
     public static final int OP_VOLTAR = 0;
 
     public static String getOpcoes() {
@@ -21,6 +22,7 @@ public class ClienteMenu {
                 + "1- Cadastrar Cliente\n"
                 + "2- Listar Clientes\n"
                 + "3- Editar Cliente\n"
+                + "4- Excluir Cliente\n"
                 + "0- Voltar"
                 + "\n--------------------------------------");
     }

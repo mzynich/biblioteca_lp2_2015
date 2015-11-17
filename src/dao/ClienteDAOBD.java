@@ -161,12 +161,12 @@ public class ClienteDAOBD implements ClienteDAO {
     }
 
     public int quantidadeEmprestimosAtuais(Cliente cliente) {
-        try{
+        try {
             String sql = "SELECT COUNT(*) FROM emprestimo WHERE codCliente=? AND ativo=true";
             conectar(sql);
             comando.setInt(1, cliente.getId());
             ResultSet r = comando.executeQuery();
-            if(r.next()){
+            if (r.next()) {
                 return r.getInt(1);
             }
         } catch (SQLException ex) {

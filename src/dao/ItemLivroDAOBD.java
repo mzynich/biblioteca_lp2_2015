@@ -29,32 +29,57 @@ public class ItemLivroDAOBD implements ItemLivroDAO {
 
     @Override
     public void inserir(ItemLivro itemLivro) {
-        int id = 0;
+        Livro l = inserirLivro(itemLivro.getLivro());
+        if (l != null) {
+            try {
+                String sql = "INSERT INTO itemLivro(codLivro,quantidadeTotal,quantidadeDisponivel) VALUES(?,?,?)";
+                conectarObtendoId(sql);
+                comando.setInt(1, l.getId());
+                comando.setInt(2, itemLivro.getQuantidadeTotal());
+                comando.setInt(3, itemLivro.getQuantidadeDisponivel());
+                comando.executeUpdate();
+                ResultSet resultado = comando.getGeneratedKeys();
+                if (resultado.next()) {
+                    int id = resultado.getInt(1);
+                    itemLivro.setId(id);
+                }
 
+            } catch (SQLException ex) {
+                Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                fecharConexao();
+            }
+        } else {
+            System.out.println("Erro ao cadastrar o livro. Tente novamente.");
+        }
+
+    }
+
+    private Livro inserirLivro(Livro livro) {
         try {
-            String sql = "INSERT INTO itemLivro(codLivro,quantidadeTotal,quantidadeDisponivel) VALUES(?,?,?)";
+            String sql = "INSERT INTO livro(isbn,nome,autor,editora,ano) VALUES (?,?,?,?,?)";
             conectarObtendoId(sql);
-            comando.setInt(1, itemLivro.getLivro().getId());
-            comando.setInt(2, itemLivro.getQuantidadeTotal());
-            comando.setInt(3, itemLivro.getQuantidadeDisponivel());
+            comando.setString(1, livro.getISBN());
+            comando.setString(2, livro.getNome());
+            comando.setString(3, livro.getAutor());
+            comando.setString(4, livro.getEditora());
+            comando.setInt(5, livro.getAno());
             comando.executeUpdate();
             ResultSet resultado = comando.getGeneratedKeys();
             if (resultado.next()) {
-                id = resultado.getInt(1);
-                itemLivro.setId(id);
+                livro.setId(resultado.getInt(1));
+                return livro;
             }
-
         } catch (SQLException ex) {
-            Logger.getLogger(LivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            fecharConexao();
+            Logger.getLogger(ItemLivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     @Override
     public void deletar(ItemLivro itemLivro) {
         try {
-            String sql = "DELETE FROM itemLivro WHERE id = ? CASCADE";
+            String sql = "DELETE FROM itemLivro WHERE id = ?";
             conectar(sql);
             comando.setInt(1, itemLivro.getId());
             comando.executeUpdate();
