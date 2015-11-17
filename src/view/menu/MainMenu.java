@@ -16,6 +16,10 @@ public class MainMenu {
     public static final int OP_RELATORIO = 3;
     public static final int OP_SAIR = 0;
 
+    /**
+     * Menu principal da aplicação
+     * @return As opções disponíveis
+     */
     public static String getOpcoes() {
         return ("\n--------------------------------------\n"
                 + "1- Menu Clientes\n"

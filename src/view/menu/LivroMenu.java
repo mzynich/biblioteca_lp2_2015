@@ -18,7 +18,11 @@ public class LivroMenu {
     public static final int OP_EDITAR = 5;
     public static final int OP_EXCLUIR = 6;
     public static final int OP_VOLTAR = 0;
-
+    
+    /**
+     * Menu de opções de livros
+     * @return As opções disponíveis
+     */
     public static String getOpcoes() {
         return ("\n--------------------------------------\n"
                 + "1- Cadastrar Livro\n"

@@ -17,6 +17,10 @@ public class ClienteMenu {
     public static final int OP_EXCLUIR = 4;
     public static final int OP_VOLTAR = 0;
 
+    /**
+     * Menu de opções dos clientes
+     * @return As opções disponíveis
+     */
     public static String getOpcoes() {
         return ("\n--------------------------------------\n"
                 + "1- Cadastrar Cliente\n"

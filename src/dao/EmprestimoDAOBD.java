@@ -21,6 +21,7 @@ import model.ItemLivro;
 import org.joda.time.LocalDate;
 import servico.ServicoItemLivro;
 import util.Console;
+import util.Validador;
 
 /**
  *
@@ -86,11 +87,7 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
             comando.setInt(2, emprestimo.getItemLivro().getId());
             comando.setDate(3, new java.sql.Date(emprestimo.getDataEmprestimo().toDate().getTime()));
             comando.setDate(4, new java.sql.Date(emprestimo.getDataDevolucao().toDate().getTime()));
-            //if (emprestimo.getDevolucaoEfetiva() != null) {
             comando.setDate(5, new java.sql.Date(emprestimo.getDevolucaoEfetiva().toDate().getTime()));
-            /*} else {
-             comando.setDate(5, null);
-             }*/
             comando.setInt(6, emprestimo.getDiasAtraso());
             comando.setBoolean(7, emprestimo.isAtivo());
             comando.setInt(8, emprestimo.getId());
@@ -268,42 +265,43 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
 
     public void clientesMaisRetiraramLivro() {
         String livro = Console.scanString("Nome do livro: ");
-        List<ItemLivro> lista = new ServicoItemLivro().pesquisaItemLivroNome(livro);
-        if (lista.size() <= 0) {
-            System.out.println("Livro não existente no sistema");
-        } else {
-            System.out.println(String.format("%-10s", "CÓDIGO") + "\t"
-                    + String.format("%-50s", "|NOME") + "\t");
-            for (int i = 0; i < lista.size(); i++) {
-                System.out.println(String.format("%-13s", i) + "\t"
-                        + String.format("%-30s", "|" + lista.get(i).getLivro().getNome()));
-            }
-            int opcao = Console.scanInt("Digite o código do livro ou -1 para cancelar: ");
-            if (opcao != -1 && opcao < lista.size()) {
-                System.out.println("-----------------------------\n");
-                System.out.println(String.format("%-50s", "Cliente") + "\t"
-                        + String.format("%-3s", "|Quantidade de empréstimos"));
-                try {
-                    String sql = "SELECT cliente.nome, COUNT(*) AS quantidade FROM emprestimo "
-                            + "INNER JOIN cliente ON (emprestimo.codCliente = cliente.id)"
-                            + "INNER JOIN itemLivro ON (emprestimo.codItemLivro = itemLivro.id) "
-                            + "INNER JOIN livro ON (itemLivro.codLivro = livro.id) AND livro.nome = ?"
-                            + "GROUP BY cliente.nome ORDER BY quantidade DESC";
-                    conectar(sql);
-                    comando.setString(1, lista.get(opcao).getLivro().getNome());
-                    ResultSet r = comando.executeQuery();
-                    while (r.next()) {
-                        System.out.println(String.format("%-50s", r.getString(1)) + "\t"
-                                + String.format("%-3s", "|" + r.getInt(2)));
+        if (Validador.nomeLivroValido(livro)) {
+            List<ItemLivro> lista = new ServicoItemLivro().pesquisaItemLivroNome(livro);
+            if (lista.size() <= 0) {
+                System.out.println("Livro não existente no sistema");
+            } else {
+                System.out.println(String.format("%-10s", "CÓDIGO") + "\t"
+                        + String.format("%-50s", "|NOME") + "\t");
+                for (int i = 0; i < lista.size(); i++) {
+                    System.out.println(String.format("%-13s", i) + "\t"
+                            + String.format("%-30s", "|" + lista.get(i).getLivro().getNome()));
+                }
+                int opcao = Console.scanInt("Digite o código do livro ou -1 para cancelar: ");
+                if (opcao != -1 && opcao < lista.size()) {
+                    System.out.println("-----------------------------\n");
+                    System.out.println(String.format("%-50s", "Cliente") + "\t"
+                            + String.format("%-3s", "|Quantidade de empréstimos"));
+                    try {
+                        String sql = "SELECT cliente.nome, COUNT(*) AS quantidade FROM emprestimo "
+                                + "INNER JOIN cliente ON (emprestimo.codCliente = cliente.id)"
+                                + "INNER JOIN itemLivro ON (emprestimo.codItemLivro = itemLivro.id) "
+                                + "INNER JOIN livro ON (itemLivro.codLivro = livro.id) AND livro.nome = ?"
+                                + "GROUP BY cliente.nome ORDER BY quantidade DESC";
+                        conectar(sql);
+                        comando.setString(1, lista.get(opcao).getLivro().getNome());
+                        ResultSet r = comando.executeQuery();
+                        while (r.next()) {
+                            System.out.println(String.format("%-50s", r.getString(1)) + "\t"
+                                    + String.format("%-3s", "|" + r.getInt(2)));
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(EmprestimoDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+                    } finally {
+                        fecharConexao();
                     }
-                } catch (SQLException ex) {
-                    Logger.getLogger(EmprestimoDAOBD.class.getName()).log(Level.SEVERE, null, ex);
-                } finally {
-                    fecharConexao();
                 }
             }
         }
-
     }
 
     public void clientesMaisAtrasaram() {

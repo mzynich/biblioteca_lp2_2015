@@ -12,6 +12,7 @@ import model.ItemLivro;
 import servico.ServicoEmprestimo;
 import servico.ServicoItemLivro;
 import util.Console;
+import util.Validador;
 import view.menu.ClienteMenu;
 import view.menu.RelatorioMenu;
 
@@ -69,23 +70,25 @@ public class RelatorioUI {
 
     private void detalhesLivro() {
         String nome = Console.scanString("Digite o nome do livro: ");
-        List<ItemLivro> listaItemLivro = servicoItemLivro.pesquisaItemLivroNome(nome);
-        if (listaItemLivro.size() <= 0) {
-            System.out.println("Livro não cadastrado no sistema.");
-        } else {
-            System.out.println(String.format("%-13s", "ISBN") + "\t"
-                    + String.format("%-50s", "|NOME") + "\t"
-                    + String.format("%-50s", "|AUTORES") + "\t"
-                    + String.format("%-50s", "|EDITORA") + "\t"
-                    + String.format("%-4s", "|ANO") + "\t"
-                    + String.format("%-4s", "|QUANTIDADE"));
-            for (ItemLivro i : listaItemLivro) {
-                System.out.println(String.format("%-13s", i.getLivro().getISBN()) + "\t"
-                        + String.format("%-50s", "|" + i.getLivro().getNome()) + "\t"
-                        + String.format("%-50s", "|" + i.getLivro().getAutor()) + "\t"
-                        + String.format("%-50s", "|" + i.getLivro().getEditora()) + "\t"
-                        + String.format("%-4s", "|" + i.getLivro().getAno()) + "\t"
-                        + String.format("%-4s", "|" + i.getQuantidadeDisponivel() + "/" + i.getQuantidadeTotal()));
+        if (Validador.nomeLivroValido(nome)) {
+            List<ItemLivro> listaItemLivro = servicoItemLivro.pesquisaItemLivroNome(nome);
+            if (listaItemLivro.size() <= 0) {
+                System.out.println("Livro não cadastrado no sistema.");
+            } else {
+                System.out.println(String.format("%-13s", "ISBN") + "\t"
+                        + String.format("%-50s", "|NOME") + "\t"
+                        + String.format("%-50s", "|AUTORES") + "\t"
+                        + String.format("%-50s", "|EDITORA") + "\t"
+                        + String.format("%-4s", "|ANO") + "\t"
+                        + String.format("%-4s", "|QUANTIDADE"));
+                for (ItemLivro i : listaItemLivro) {
+                    System.out.println(String.format("%-13s", i.getLivro().getISBN()) + "\t"
+                            + String.format("%-50s", "|" + i.getLivro().getNome()) + "\t"
+                            + String.format("%-50s", "|" + i.getLivro().getAutor()) + "\t"
+                            + String.format("%-50s", "|" + i.getLivro().getEditora()) + "\t"
+                            + String.format("%-4s", "|" + i.getLivro().getAno()) + "\t"
+                            + String.format("%-4s", "|" + i.getQuantidadeDisponivel() + "/" + i.getQuantidadeTotal()));
+                }
             }
         }
     }

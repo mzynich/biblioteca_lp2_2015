@@ -228,4 +228,19 @@ public class ItemLivroDAOBD implements ItemLivroDAO {
         }
 
     }
+
+    public void editarLivro(Livro l) {
+        try {
+            String sql = "UPDATE LIVRO SET nome=? ,autor=? ,editora=?,ano=? WHERE id=?";
+            conectar(sql);
+            comando.setString(1, l.getNome());
+            comando.setString(2, l.getAutor());
+            comando.setString(3, l.getEditora());
+            comando.setInt(4, l.getAno());
+            comando.setInt(5, l.getId());
+            comando.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ItemLivroDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

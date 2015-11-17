@@ -17,6 +17,7 @@ import servico.ServicoCliente;
 import servico.ServicoEmprestimo;
 import servico.ServicoItemLivro;
 import util.Console;
+import util.Validador;
 import view.menu.LivroMenu;
 
 /**
@@ -58,7 +59,7 @@ public class LivroUI {
                     devolver();
                     break;
                 case LivroMenu.OP_EDITAR:
-                    editarLivro();
+                    editarItemLivro();
                     break;
                 case LivroMenu.OP_EXCLUIR:
                     excluirLivro();
@@ -75,23 +76,34 @@ public class LivroUI {
 
     private void cadastrarLivro() {
         String ISBN = Console.scanString("ISBN: ");
-        if (servicoItemLivro.pesquisaItemLivroISBN(ISBN) != null) {
-            System.out.println("Livro já existente no sistema");
-        } else {
-            String nome = Console.scanString("Nome: ");
-            String autor = Console.scanString("Autores: ");
-            String editora = Console.scanString("Editora: ");
-            try {
-                int ano = Console.scanInt("Ano: ");
-                int quantidade = Console.scanInt("Quantidade disponível: ");
-                Livro livro = new Livro(ISBN, nome, autor, editora, ano);
-                if (servicoItemLivro.addItemLivro(new ItemLivro(livro, quantidade))) {
-                    System.out.println("Livro cadastrado com sucesso");
+        if (Validador.ISBNValido(ISBN)) {
+            if (servicoItemLivro.pesquisaItemLivroISBN(ISBN) != null) {
+                System.out.println("Livro já existente no sistema");
+            } else {
+                String nome = Console.scanString("Nome: ");
+                if (Validador.nomeLivroValido(nome)) {
+                    String autor = Console.scanString("Autores: ");
+                    if (Validador.autorValido(autor)) {
+                        String editora = Console.scanString("Editora: ");
+                        if (Validador.editoraValida(editora)) {
+                            try {
+                                int ano = Console.scanInt("Ano: ");
+                                if (Validador.anoValido(ano)) {
+                                    int quantidade = Console.scanInt("Quantidade disponível: ");
+                                    if (Validador.quantidadeValida(quantidade)) {
+                                        Livro livro = new Livro(ISBN, nome, autor, editora, ano);
+                                        if (servicoItemLivro.addItemLivro(new ItemLivro(livro, quantidade))) {
+                                            System.out.println("Livro cadastrado com sucesso");
+                                        }
+                                    }
+                                }
+                            } catch (InputMismatchException e) {
+                                System.out.println("Ano e quantidade devem ser números.");
+                            }
+                        }
+                    }
                 }
-            } catch (InputMismatchException e) {
-                System.out.println("Ano e quantidade devem ser números.");
             }
-
         }
     }
 
@@ -115,109 +127,130 @@ public class LivroUI {
 
     private void emprestar() {
         String nomeLivro = Console.scanString("Nome do livro: ");
-        List<ItemLivro> lista = servicoItemLivro.pesquisaItemLivroNome(nomeLivro);
-        if (lista.size() <= 0) {
-            System.out.println("Livro não existente no sistema");
-        } else {
-            System.out.println(String.format("%-10s", "CÓDIGO") + "\t"
-                    + String.format("%-50s", "|NOME") + "\t");
-            for (int i = 0; i < lista.size(); i++) {
-                System.out.println(String.format("%-13s", i) + "\t"
-                        + String.format("%-30s", "|" + lista.get(i).getLivro().getNome()));
-            }
-            int opcao = Console.scanInt("Digite o código do livro ou -1 para cancelar: ");
-            if (opcao != -1 && opcao < lista.size()) {
-                if (lista.get(opcao).getQuantidadeDisponivel() <= 0) {
-                    System.out.println("Todos exemplares deste livro estão emprestados.");
-                } else {
-                    String matriculaCliente = Console.scanString("Matricula do cliente: ");
-                    Cliente cliente = servicoCliente.pesquisaClienteMatricula(matriculaCliente);
-                    if (cliente == null) {
-                        System.out.println("Cliente não cadastrado no sistema");
-                    } else if (servicoCliente.getQtdEmprestimosAtuais(cliente) >= Biblioteca.limiteEmprestimos) {
-                        System.out.println("Cliente possui " + Biblioteca.limiteEmprestimos + " livros emprestados.");
-                    } else {
-                        Emprestimo emprestimo = new Emprestimo(cliente, lista.get(opcao));
-                        servicoEmprestimo.addEmprestimo(emprestimo);
-                        lista.get(opcao).removerQtdLivroDisponivel(1);
-                        servicoItemLivro.editaItemLivro(lista.get(opcao));
-                        System.out.println("Empréstimo efetuado com sucesso. Data de devolução: "
-                                + emprestimo.getDataDevolucao().getDayOfMonth() + "/"
-                                + emprestimo.getDataDevolucao().getMonthOfYear() + "/"
-                                + emprestimo.getDataDevolucao().getYear());
-                    }
-                }
+        if (Validador.nomeLivroValido(nomeLivro)) {
+            List<ItemLivro> lista = servicoItemLivro.pesquisaItemLivroNome(nomeLivro);
+            if (lista.size() <= 0) {
+                System.out.println("Livro não existente no sistema");
             } else {
-                System.out.println("Operação cancelada.");
+                System.out.println(String.format("%-10s", "CÓDIGO") + "\t"
+                        + String.format("%-50s", "|NOME") + "\t");
+                for (int i = 0; i < lista.size(); i++) {
+                    System.out.println(String.format("%-13s", i) + "\t"
+                            + String.format("%-30s", "|" + lista.get(i).getLivro().getNome()));
+                }
+                int opcao = Console.scanInt("Digite o código do livro ou -1 para cancelar: ");
+                if (opcao != -1 && opcao < lista.size()) {
+                    if (lista.get(opcao).getQuantidadeDisponivel() <= 0) {
+                        System.out.println("Todos exemplares deste livro estão emprestados.");
+                    } else {
+                        String matriculaCliente = Console.scanString("Matricula do cliente: ");
+                        if (Validador.matriculaValida(matriculaCliente)) {
+                            Cliente cliente = servicoCliente.pesquisaClienteMatricula(matriculaCliente);
+                            if (cliente == null) {
+                                System.out.println("Cliente não cadastrado no sistema");
+                            } else if (servicoCliente.getQtdEmprestimosAtuais(cliente) >= Biblioteca.limiteEmprestimos) {
+                                System.out.println("Cliente possui " + Biblioteca.limiteEmprestimos + " livros emprestados.");
+                            } else {
+                                Emprestimo emprestimo = new Emprestimo(cliente, lista.get(opcao));
+                                servicoEmprestimo.addEmprestimo(emprestimo);
+                                lista.get(opcao).removerQtdLivroDisponivel(1);
+                                servicoItemLivro.editaItemLivro(lista.get(opcao));
+                                System.out.println("Empréstimo efetuado com sucesso. Data de devolução: "
+                                        + emprestimo.getDataDevolucao().getDayOfMonth() + "/"
+                                        + emprestimo.getDataDevolucao().getMonthOfYear() + "/"
+                                        + emprestimo.getDataDevolucao().getYear());
+                            }
+                        }
+                    }
+                } else {
+                    System.out.println("Operação cancelada.");
+                }
             }
         }
     }
 
     private void devolver() {
         String matriculaCliente = Console.scanString("Matrícula do cliente: ");
-        Cliente cliente = servicoCliente.pesquisaClienteMatricula(matriculaCliente);
-        if (cliente == null) {
-            System.out.println("Cliente não cadastrado no sistema");
-        } else {
-            String nomeLivro = Console.scanString("ISBN do livro: ");
-            Emprestimo emprestimo = servicoEmprestimo.getEmprestimoClienteISBNLivro(cliente, nomeLivro);
-            if (emprestimo == null) {
-                System.out.println("Cliente não possui este livro emprestado.");
+        if (Validador.matriculaValida(matriculaCliente)) {
+            Cliente cliente = servicoCliente.pesquisaClienteMatricula(matriculaCliente);
+            if (cliente == null) {
+                System.out.println("Cliente não cadastrado no sistema");
             } else {
-                emprestimo.setDevolucaoEfetiva(new LocalDate());
-                emprestimo.getItemLivro().adicionarQtdLivroDisponivel(1);
-                servicoItemLivro.editaItemLivro(emprestimo.getItemLivro());
-                emprestimo.setAtivo(false);
-                servicoEmprestimo.editarEmprestimo(emprestimo);
-                if (emprestimo.getDiasAtraso() > 0) {
-                    System.out.println("Devolução efetuada com sucesso." + " Dias de atraso: " + emprestimo.getDiasAtraso());
-                } else {
-                    System.out.println("Devolução efetuada com sucesso.");
+                String isbnLivro = Console.scanString("ISBN do livro: ");
+                if (Validador.ISBNValido(isbnLivro)) {
+                    Emprestimo emprestimo = servicoEmprestimo.getEmprestimoClienteISBNLivro(cliente, isbnLivro);
+                    if (emprestimo == null) {
+                        System.out.println("Cliente não possui este livro emprestado.");
+                    } else {
+                        emprestimo.setDevolucaoEfetiva(new LocalDate());
+                        emprestimo.getItemLivro().adicionarQtdLivroDisponivel(1);
+                        servicoItemLivro.editaItemLivro(emprestimo.getItemLivro());
+                        emprestimo.setAtivo(false);
+                        servicoEmprestimo.editarEmprestimo(emprestimo);
+                        if (emprestimo.getDiasAtraso() > 0) {
+                            System.out.println("Devolução efetuada com sucesso." + " Dias de atraso: " + emprestimo.getDiasAtraso());
+                        } else {
+                            System.out.println("Devolução efetuada com sucesso.");
+                        }
+                    }
                 }
             }
         }
     }
 
-    private void editarLivro() {
+    private void editarItemLivro() {
         String ISBN = Console.scanString("ISBN: ");
-        try {
-            Livro l = servicoItemLivro.pesquisaItemLivroISBN(ISBN).getLivro();
-            if (l != null) {
-                String nome = Console.scanString("Nome: ");
-                String autor = Console.scanString("Autores: ");
-                String editora = Console.scanString("Editora: ");
-                int ano = Console.scanInt("Ano: ");
-                l.setNome(nome);
-                l.setAutor(autor);
-                l.setEditora(editora);
-                l.setAno(ano);
-                servicoItemLivro.editaLivro(l);
-                System.out.println("Alteração efetuada com sucesso.");
+        if (Validador.ISBNValido(ISBN)) {
+            try {
+                Livro l = servicoItemLivro.pesquisaItemLivroISBN(ISBN).getLivro();
+                if (l != null) {
+                    String nome = Console.scanString("Nome: ");
+                    if (Validador.nomeLivroValido(nome)) {
+                        String autor = Console.scanString("Autores: ");
+                        if (Validador.autorValido(autor)) {
+                            String editora = Console.scanString("Editora: ");
+                            if (Validador.editoraValida(editora)) {
+                                int ano = Console.scanInt("Ano: ");
+                                if (Validador.anoValido(ano)) {
+                                    l.setNome(nome);
+                                    l.setAutor(autor);
+                                    l.setEditora(editora);
+                                    l.setAno(ano);
+                                    servicoItemLivro.editaLivro(l);
+                                    System.out.println("Alteração efetuada com sucesso.");
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (NullPointerException e) {
+                System.out.println("Livro não encontrado.");
+            } catch (InputMismatchException e) {
+                System.out.println("Ano inválido.");
             }
-        } catch (NullPointerException e) {
-            System.out.println("Livro não encontrado.");
-        } catch (InputMismatchException e) {
-            System.out.println("Ano inválido.");
         }
+
     }
 
     private void excluirLivro() {
         String ISBN = Console.scanString("ISBN: ");
-        try {
-            ItemLivro l = servicoItemLivro.pesquisaItemLivroISBN(ISBN);
-            if (l != null) {
-                int qtd = l.getQuantidadeTotal() - l.getQuantidadeDisponivel();
-                if (qtd == 0) {
-                    servicoItemLivro.excluiItemLivro(l);
-                    System.out.println("Livro excluído com sucesso.");
-                } else {
-                    System.out.println(qtd + " exemplares estão emprestados. Efetue a devolução deles para habilitar a exclusão de um livro.");
+        if (Validador.ISBNValido(ISBN)) {
+            try {
+                ItemLivro l = servicoItemLivro.pesquisaItemLivroISBN(ISBN);
+                if (l != null) {
+                    int qtd = l.getQuantidadeTotal() - l.getQuantidadeDisponivel();
+                    if (qtd == 0) {
+                        servicoItemLivro.excluiItemLivro(l);
+                        System.out.println("Livro excluído com sucesso.");
+                    } else {
+                        System.out.println(qtd + " exemplares estão emprestados. Efetue a devolução deles para habilitar a exclusão de um livro.");
+                    }
                 }
+            } catch (NullPointerException e) {
+                System.out.println("Livro não encontrado.");
+            } catch (InputMismatchException e) {
+                System.out.println("Ano inválido.");
             }
-        } catch (NullPointerException e) {
-            System.out.println("Livro não encontrado.");
-        } catch (InputMismatchException e) {
-            System.out.println("Ano inválido.");
         }
     }
 }

@@ -39,15 +39,15 @@ public class ServicoItemLivro {
         return itemLivroDAOBD.procurarPorNome(nomeLivro);
     }
 
-    public void editaLivro(Livro l) {
-        //itemLivroDAOBD.
-    }
-
     public void editaItemLivro(ItemLivro itemLivro) {
         itemLivroDAOBD.atualizar(itemLivro);
     }
 
     public void excluiItemLivro(ItemLivro l) {
         itemLivroDAOBD.deletar(l);
+    }
+
+    public void editaLivro(Livro l) {
+        itemLivroDAOBD.editarLivro(l);
     }
 }

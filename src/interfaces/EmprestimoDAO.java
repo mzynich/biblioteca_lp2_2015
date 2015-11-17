@@ -19,13 +19,9 @@ public interface EmprestimoDAO {
 
     public Emprestimo procurarPorId(int id);
 
-    //public Emprestimo procurarPorMatriculaCliente(String matricula);
-
     public Emprestimo procurarPorISBNLivro(String ISBN);
 
     public List<Emprestimo> procurarPorNomeCliente(String nome);
-
-    //public List<Emprestimo> procurarPorNomeLivro(String nome);    
 
     public void livrosMaisRetirados();
 }

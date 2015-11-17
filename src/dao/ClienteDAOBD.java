@@ -120,7 +120,7 @@ public class ClienteDAOBD implements ClienteDAO {
     @Override
     public List<Cliente> procurarPorNome(String nome) {
         List<Cliente> array = new ArrayList<>();
-        String sql = "SELECT * FROM cliente WHERE nome LIKE ?";
+        String sql = "SELECT * FROM cliente WHERE nome ILIKE ?";
 
         try {
             conectar(sql);

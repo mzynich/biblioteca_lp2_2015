@@ -19,6 +19,10 @@ public class RelatorioMenu {
     public static final int OP_LISTAR_EMPRESTIMOS = 6;
     public static final int OP_VOLTAR = 0;
 
+    /**
+     * Menu de opções de relatórios
+     * @return As opções disponíveis
+     */
     public static String getOpcoes() {
         return ("\n--------------------------------------\n"
                 + "1- Detalhes de um livro\n"

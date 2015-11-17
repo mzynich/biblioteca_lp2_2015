@@ -9,20 +9,27 @@ import java.util.InputMismatchException;
 import model.Cliente;
 import servico.ServicoCliente;
 import util.Console;
+import util.Validador;
 import view.menu.ClienteMenu;
 
 /**
- *
+ * Classe de interface gráfica referente ao cliente
  * @author mzynich
  */
 public class ClienteUI {
-
+    
     private ServicoCliente servicoCliente;
 
+    /**
+     * Construtor da classe. Inicializa o servico com o cliente
+     */
     public ClienteUI() {
         servicoCliente = new ServicoCliente();
     }
 
+    /**
+     * Exibe as opções e aguarda a entrada de dados do usuário
+     */
     public void executar() {
         int opcao = 0;
         do {
@@ -50,23 +57,34 @@ public class ClienteUI {
                     break;
                 default:
                     System.out.println("Opção inválida..");
-
             }
         } while (opcao != ClienteMenu.OP_VOLTAR);
     }
 
+    /**
+     * Cadastra um novo cliente
+     */
     private void cadastrarCliente() {
         String matricula = Console.scanString("Matrícula: ");
-        if (servicoCliente.pesquisaClienteMatricula(matricula) != null) {
-            System.out.println("Cliente já existente no sistema");
-        } else {
-            String nome = Console.scanString("Nome: ");
-            String telefone = Console.scanString("Telefone: ");
-            servicoCliente.addCliente(new Cliente(matricula, nome, telefone));
-            System.out.println("Cliente adicionado com sucesso.");
+        if (Validador.matriculaValida(matricula)) {
+            if (servicoCliente.pesquisaClienteMatricula(matricula) != null) {
+                System.out.println("Cliente já existente no sistema");
+            } else {
+                String nome = Console.scanString("Nome: ");
+                if (Validador.nomeClienteValido(nome)) {
+                    String telefone = Console.scanString("Telefone: ");
+                    if (Validador.telefoneValido(telefone)) {
+                        servicoCliente.addCliente(new Cliente(matricula, nome, telefone));
+                        System.out.println("Cliente adicionado com sucesso.");
+                    }
+                }
+            }
         }
     }
 
+    /**
+     * Lista todos os clientes cadastrados na base
+     */
     private void listaClientes() {
         System.out.println("-----------------------------\n");
         System.out.println(String.format("%-11s", "MATRÍCULA") + "\t"
@@ -80,27 +98,43 @@ public class ClienteUI {
 
     }
 
+    /**
+     * Edita as informações de um cliente
+     */
     private void editarCliente() {
         String matricula = Console.scanString("Matrícula: ");
-        Cliente c = servicoCliente.pesquisaClienteMatricula(matricula);
-        if (c != null) {
-            String nome = Console.scanString("Nome: ");
-            String telefone = Console.scanString("Telefone: ");
-            c.setNome(nome);
-            c.setTelefone(telefone);
-            servicoCliente.editarCliente(c);
-            System.out.println("Alteração efetuada com sucesso.");
-        } else {
-            System.out.println("Cliente não encontrado.");
+        if (Validador.matriculaValida(matricula)) {
+            Cliente c = servicoCliente.pesquisaClienteMatricula(matricula);
+            if (c != null) {
+                String nome = Console.scanString("Nome: ");
+                if (Validador.nomeClienteValido(nome)) {
+                    String telefone = Console.scanString("Telefone: ");
+                    if (Validador.telefoneValido(telefone)) {
+                        c.setNome(nome);
+                        c.setTelefone(telefone);
+                        servicoCliente.editarCliente(c);
+                        System.out.println("Alteração efetuada com sucesso.");
+                    }
+                }
+            } else {
+                System.out.println("Cliente não encontrado.");
+            }
         }
     }
 
+    /**
+     * Exclui um cliente do sistema
+     */
     private void excluirCliente() {
         String matricula = Console.scanString("Matrícula: ");
-        Cliente c = servicoCliente.pesquisaClienteMatricula(matricula);
-        if (c != null) {
-            servicoCliente.excluir(c);
-            System.out.println("Cliente excluído com sucesso.");
+        if (Validador.matriculaValida(matricula)) {
+            Cliente c = servicoCliente.pesquisaClienteMatricula(matricula);
+            if (c != null) {
+                servicoCliente.excluir(c);
+                System.out.println("Cliente excluído com sucesso.");
+            } else {
+                System.out.println("Cliente não encontrado.");
+            }
         }
     }
 }
