@@ -136,6 +136,7 @@ public class Validador {
         }
         if (getTamanhoString(isbn) != 13 && getTamanhoString(isbn) != 10) {
             System.out.println("ISBN deve possuir exatamente 10 ou 13 caracteres");
+            return false;
         }
         return true;
     }
