@@ -6,6 +6,7 @@
 package servico;
 
 import dao.ClienteDAOBD;
+import java.util.List;
 import model.Cliente;
 
 /**
@@ -24,11 +25,15 @@ public class ServicoCliente {
         return clienteDAO.procurarPorMatricula(matricula);
     }
 
+    public Cliente pesquisaClienteID(int id) {
+        return clienteDAO.procurarPorId(id);
+    }
+
     public void addCliente(Cliente cliente) {
         clienteDAO.inserir(cliente);
     }
 
-    public Iterable<Cliente> getListaClientes() {
+    public List<Cliente> getListaClientes() {
         return clienteDAO.listar();
     }
 
