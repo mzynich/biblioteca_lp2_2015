@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bb7f825a-d894-452b-8efe-97e061867c96">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="isbn" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT livro.nome AS titulo, cliente.nome, COUNT(*) AS quantidade FROM emprestimo
+INNER JOIN cliente ON (emprestimo.codCliente = cliente.id)
+INNER JOIN itemLivro ON (emprestimo.codItemLivro = itemLivro.id)
+INNER JOIN livro ON (itemLivro.codLivro = livro.id) AND livro.isbn = $P{isbn}
+GROUP BY cliente.nome,livro.nome ORDER BY quantidade DESC]]>
+	</queryString>
+	<field name="titulo" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="quantidade" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="3" width="610" height="38" uuid="74ef8395-33fb-4328-ba32-29ae53896ef8"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de clientes que mais retiraram um livro]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="294" y="1" width="163" height="20" uuid="6acf303c-74fc-4b4c-8d41-2ae5d9e204cb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="1" width="69" height="20" uuid="26cda94b-1365-4af8-aad4-c80045b6a097"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="1" width="272" height="20" uuid="c0074904-4605-4225-93e4-460ca90a7a52"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Título]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="294" y="1" width="163" height="20" uuid="6314b757-5f0c-4ec3-91ac-f80447474a46"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="468" y="1" width="69" height="20" uuid="855a4f9a-bc9e-46ee-aca4-7af0a59e8f5c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="0" width="272" height="20" uuid="fb149dd0-67d7-4c55-89b7-f3726bc07801"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

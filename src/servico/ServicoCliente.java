@@ -8,6 +8,7 @@ package servico;
 import dao.ClienteDAOBD;
 import java.util.List;
 import model.Cliente;
+import model.Emprestimo;
 
 /**
  *
@@ -49,4 +50,7 @@ public class ServicoCliente {
         clienteDAO.deletar(c);
     }
 
+    public List<Emprestimo> getEmprestimosAtivos(Cliente c){
+        return clienteDAO.getEmprestimosAtivos(c);
+    }
 }

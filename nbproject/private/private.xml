@@ -3,7 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/view/menu/ClienteMenu.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/servico/ServicoItemLivro.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/view/RelatorioUI.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/sqlBiblioteca.sql</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/servico/ServicoEmprestimo.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/dao/EmprestimoDAOBD.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/Frames/FrameRelatorio.java</file>
             <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/Frames/Principal.java</file>
         </group>
     </open-files>

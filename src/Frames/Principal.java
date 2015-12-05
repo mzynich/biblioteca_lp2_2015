@@ -20,6 +20,7 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -303,7 +304,8 @@ public class Principal extends javax.swing.JFrame {
 
     /**
      * Botão Livro
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         new FrameListarLivro().setVisible(true);
@@ -311,7 +313,8 @@ public class Principal extends javax.swing.JFrame {
 
     /**
      * CRUD->Listar->Livro
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
         new FrameListarLivro().setVisible(true);
@@ -319,7 +322,8 @@ public class Principal extends javax.swing.JFrame {
 
     /**
      * Botão Livro
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         new FrameListarCliente().setVisible(true);
@@ -327,7 +331,8 @@ public class Principal extends javax.swing.JFrame {
 
     /**
      * CRUD->Listar->Cliente
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
         new FrameListarCliente().setVisible(true);
@@ -370,6 +375,7 @@ public class Principal extends javax.swing.JFrame {
 
     /**
      * CRUD->Editar->Cliente
+     *
      * @param evt
      */
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -386,104 +392,119 @@ public class Principal extends javax.swing.JFrame {
 
     /**
      * CRUD->Remover->Livro
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         String isbn = JOptionPane.showInputDialog("ISBN do livro");
-        ItemLivro itemLivro = new servico.ServicoItemLivro().pesquisaItemLivroISBN(isbn);
-        if (itemLivro != null) {
-            new servico.ServicoItemLivro().excluiItemLivro(itemLivro);
-            JOptionPane.showConfirmDialog(this, "Livro removido com sucesso.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Livro não encontrado.");
+        if (isbn != null) {
+            ItemLivro itemLivro = new servico.ServicoItemLivro().pesquisaItemLivroISBN(isbn);
+            if (itemLivro != null) {
+                new servico.ServicoItemLivro().excluiItemLivro(itemLivro);
+                JOptionPane.showConfirmDialog(this, "Livro removido com sucesso.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Livro não encontrado.");
+            }
         }
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     /**
      * CRUD->Remover->Cliente
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         String matricula = JOptionPane.showInputDialog("Matrícula do cliente");
-        Cliente cliente = new servico.ServicoCliente().pesquisaClienteMatricula(matricula);
-        if (cliente != null) {
-            new servico.ServicoCliente().excluir(cliente);
-            JOptionPane.showConfirmDialog(this, "Cliente removido com sucesso.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
+        if (matricula != null) {
+            Cliente cliente = new servico.ServicoCliente().pesquisaClienteMatricula(matricula);
+            if (cliente != null) {
+                new servico.ServicoCliente().excluir(cliente);
+                JOptionPane.showConfirmDialog(this, "Cliente removido com sucesso.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
+            }
         }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     /**
      * Botão Relatório
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        new FrameRelatorio().setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * Funções -> Emprestar Livro
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        // TODO add your handling code here:
+        new FrameEmprestarLivro().setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * Funções -> Devolver Livro
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        // TODO add your handling code here:
+        new FrameDevolverLivro().setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * Relatórios -> Detalhes de um livro
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
-        // TODO add your handling code here:
+        new FrameRelatorio().abrirRelatorioDetalhesLivro();
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     /**
      * Relatórios -> Livros disponíveis
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
-        // TODO add your handling code here:
+        new FrameRelatorio().abrirRelatorioLivrosDisponiveis();
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     /**
      * Relatórios -> Livros mais retirados
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
-        // TODO add your handling code here:
+        new FrameRelatorio().abrirRelatorioLivrosMaisRetirados();
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     /**
      * Relatórios -> Clientes que mais retiraram um livro
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
-        // TODO add your handling code here:
+        new FrameRelatorio().abrirRelatorioClientesMaisRetiraramLivro();
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     /**
      * Relatórios -> Clientes que mais atrasaram
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
-        // TODO add your handling code here:
+        new FrameRelatorio().abrirRelatorioClientesMaisAtrasaram();
     }//GEN-LAST:event_jMenuItem19ActionPerformed
 
     /**
      * Relatórios -> Listar todos os empréstimos
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+        new FrameRelatorio().abrirRelatorioEmprestimos();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**

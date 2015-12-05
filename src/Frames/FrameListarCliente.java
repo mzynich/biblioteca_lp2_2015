@@ -7,6 +7,7 @@ package Frames;
 
 import javax.swing.JOptionPane;
 import model.Cliente;
+import model.ItemLivro;
 import servico.ServicoCliente;
 import tableModel.ClienteTableModel;
 
@@ -24,6 +25,7 @@ public class FrameListarCliente extends javax.swing.JFrame {
     public FrameListarCliente() {
         initComponents();
         servicoCliente = new ServicoCliente();
+        this.setLocationRelativeTo(null);
         atualizaTabela();
     }
 
@@ -32,7 +34,7 @@ public class FrameListarCliente extends javax.swing.JFrame {
         ClienteTableModel tableModel = (ClienteTableModel) jTable1.getModel();
 
         tableModel.setClientes(servicoCliente.getListaClientes());
-
+        jTable1.getTableHeader().setReorderingAllowed(false); 
         jTable1.updateUI();
     }
 
@@ -45,22 +47,16 @@ public class FrameListarCliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Listar Cliente");
-
-        jButton1.setText("Criar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        setResizable(false);
 
         jButton2.setText("Editar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -76,9 +72,6 @@ public class FrameListarCliente extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new ClienteTableModel());
-        jScrollPane1.setViewportView(jTable1);
-
         jButton4.setText("Cancelar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,35 +79,46 @@ public class FrameListarCliente extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Criar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new ClienteTableModel());
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4)
-                .addGap(28, 28, 28)
-                .addComponent(jButton1)
-                .addGap(33, 33, 33)
-                .addComponent(jButton2)
-                .addGap(30, 30, 30)
-                .addComponent(jButton3)
-                .addGap(19, 19, 19))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton4)
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(54, 54, 54)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(54, 54, 54)
+                        .addComponent(jButton3))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
                     .addComponent(jButton3)
-                    .addComponent(jButton1)
-                    .addComponent(jButton4))
-                .addGap(11, 11, 11))
+                    .addComponent(jButton4)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -122,7 +126,8 @@ public class FrameListarCliente extends javax.swing.JFrame {
 
     /**
      * Botão cancelar
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.dispose();
@@ -130,7 +135,8 @@ public class FrameListarCliente extends javax.swing.JFrame {
 
     /**
      * Botão criar
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         new FrameCriarEditarCliente(this).setVisible(true);
@@ -138,24 +144,32 @@ public class FrameListarCliente extends javax.swing.JFrame {
 
     /**
      * Botão editar
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new FrameCriarEditarCliente(this).setVisible(true);
+        int linha = jTable1.getSelectedRow();
+        if (linha != -1) {
+            Object o = jTable1.getValueAt(linha, 0);
+            Cliente selecionado = servicoCliente.pesquisaClienteID((int) o);
+            new FrameCriarEditarCliente(this, selecionado).setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um cliente para edição.");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * Botão remover
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int linha = jTable1.getSelectedRow();
-        if(linha !=-1){
-            Cliente c = servicoCliente.pesquisaClienteID((int)jTable1.getValueAt(linha, 0));
+        if (linha != -1) {
+            Cliente c = servicoCliente.pesquisaClienteID((int) jTable1.getValueAt(linha, 0));
             servicoCliente.excluir(c);
             atualizaTabela();
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(this, "Selecione um registro para remoção", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed

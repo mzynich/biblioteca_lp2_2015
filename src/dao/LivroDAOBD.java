@@ -89,7 +89,7 @@ public class LivroDAOBD implements LivroDAO {
     public List<Livro> listar() {
         ArrayList<Livro> array = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM livro";
+            String sql = "SELECT * FROM livro ORDER BY id";
             conectar(sql);
             ResultSet r = comando.executeQuery();
             while (r.next()) {

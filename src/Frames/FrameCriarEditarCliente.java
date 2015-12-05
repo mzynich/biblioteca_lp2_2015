@@ -5,6 +5,7 @@
  */
 package Frames;
 
+import javax.swing.JOptionPane;
 import model.Cliente;
 
 /**
@@ -14,25 +15,45 @@ import model.Cliente;
 public class FrameCriarEditarCliente extends javax.swing.JFrame {
 
     private static FrameListarCliente framePai;
-    
+    private boolean edicao;
+    private Cliente cliente;
+
     /**
      * Creates new form FrameCriarEditarCliente
      */
     public FrameCriarEditarCliente(FrameListarCliente framePai) {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.edicao = false;
         this.framePai = framePai;
     }
-    
+
     /**
      * Creates new form FrameCriarEditarCliente
      */
     public FrameCriarEditarCliente() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
-    
+
     public FrameCriarEditarCliente(Cliente cliente) {
         initComponents();
-        jTextField1.setText(cliente.getId()+"");
+        this.setLocationRelativeTo(null);
+        this.edicao = true;
+        this.cliente = cliente;
+        jTextField1.setText(cliente.getId() + "");
+        jTextField2.setText(cliente.getMatricula());
+        jTextField3.setText(cliente.getNome());
+        jTextField4.setText(cliente.getTelefone());
+    }
+
+    public FrameCriarEditarCliente(FrameListarCliente framePai, Cliente cliente) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.framePai = framePai;
+        this.edicao = true;
+        this.cliente = cliente;
+        jTextField1.setText(cliente.getId() + "");
         jTextField2.setText(cliente.getMatricula());
         jTextField3.setText(cliente.getNome());
         jTextField4.setText(cliente.getTelefone());
@@ -60,6 +81,7 @@ public class FrameCriarEditarCliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de cliente");
+        setResizable(false);
 
         jLabel1.setText("ID");
 
@@ -148,15 +170,30 @@ public class FrameCriarEditarCliente extends javax.swing.JFrame {
 
     /**
      * Botão confirmar
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        if (edicao) {
+            cliente.setMatricula(jTextField2.getText());
+            cliente.setNome(jTextField3.getText());
+            cliente.setTelefone(jTextField4.getText());
+            new servico.ServicoCliente().editarCliente(cliente);
+            JOptionPane.showMessageDialog(this, "Cliente editado com sucesso.");
+            this.dispose();
+            framePai.atualizaTabela();
+        } else {
+            new servico.ServicoCliente().addCliente(new Cliente(jTextField2.getText(), jTextField3.getText(), jTextField4.getText()));
+            JOptionPane.showMessageDialog(this, "Cliente criado com sucesso.");
+            this.dispose();
+            framePai.atualizaTabela();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * Botão cancelar
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();

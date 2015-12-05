@@ -24,6 +24,7 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
      */
     public FrameCriarEditarLivro(FrameListarLivro framePai) {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.framePai = framePai;
         this.edicao = false;
         jTextField7.setEditable(false);
@@ -31,9 +32,10 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
     
     public FrameCriarEditarLivro(FrameListarLivro framePai,ItemLivro livro) {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.framePai = framePai;
         this.edicao = true;
-        itemLivro = livro;
+        this.itemLivro = livro;
         jTextField1.setText(livro.getLivro().getId() + "");
         jTextField2.setText(livro.getLivro().getISBN());
         jTextField3.setText(livro.getLivro().getNome());
@@ -49,6 +51,7 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
      */
     public FrameCriarEditarLivro() {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.edicao = false;
         jTextField7.setEditable(false);
     }
@@ -60,9 +63,10 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
      */
     public FrameCriarEditarLivro(ItemLivro livro) {
         initComponents();
+        this.setLocationRelativeTo(null);
         this.framePai = framePai;
         this.edicao = true;
-        itemLivro = livro;
+        this.itemLivro = livro;
         jTextField1.setText(livro.getLivro().getId() + "");
         jTextField2.setText(livro.getLivro().getISBN());
         jTextField3.setText(livro.getLivro().getNome());
@@ -103,6 +107,7 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de livro");
+        setResizable(false);
 
         jLabel1.setText("ID");
 
@@ -177,22 +182,16 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
                                 .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jTextField5)
-                                        .addComponent(jTextField4)
-                                        .addComponent(jTextField3)
-                                        .addComponent(jTextField2)
-                                        .addComponent(jTextField1)
-                                        .addComponent(jTextField8))
-                                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))
+                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField5)
+                                .addComponent(jTextField4)
+                                .addComponent(jTextField3)
+                                .addComponent(jTextField2)
+                                .addComponent(jTextField1)
+                                .addComponent(jTextField8))
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addComponent(jButton1)
@@ -263,7 +262,20 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (edicao) {
+            Livro livro = itemLivro.getLivro();
+            livro.setISBN(jTextField2.getText());
+            livro.setNome(jTextField3.getText());
+            livro.setAutor(jTextField4.getText());
+            livro.setEditora(jTextField5.getText());
+            livro.setAno(Integer.parseInt(jTextField8.getText()));
+            new servico.ServicoItemLivro().editaLivro(livro);
+            itemLivro.setLivro(livro);
+            itemLivro.setQuantidadeTotal(Integer.parseInt(jTextField6.getText()));
+            itemLivro.setQuantidadeDisponivel(Integer.parseInt(jTextField7.getText()));
             new servico.ServicoItemLivro().editaItemLivro(itemLivro);
+            JOptionPane.showMessageDialog(this, "Livro editado com sucesso.");
+            this.dispose();
+            framePai.atualizaTabela();
         } else {
             new servico.ServicoItemLivro().addItemLivro(new ItemLivro(
                     new Livro(jTextField2.getText(), jTextField3.getText(), jTextField4.getText(),

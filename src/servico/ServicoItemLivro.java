@@ -50,4 +50,8 @@ public class ServicoItemLivro {
     public void editaLivro(Livro l) {
         itemLivroDAOBD.editarLivro(l);
     }
+
+    public ItemLivro pesquisaItemLivroID(int id) {
+        return itemLivroDAOBD.procurarPorId(id);
+    }
 }

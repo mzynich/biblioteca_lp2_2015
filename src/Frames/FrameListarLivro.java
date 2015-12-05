@@ -16,17 +16,22 @@ import servico.ServicoItemLivro;
  */
 public class FrameListarLivro extends javax.swing.JFrame {
 
+    private ServicoItemLivro servicoItemLivro;
+    
     /**
      * Creates new form FrameListar
      */
     public FrameListarLivro() {
         initComponents();
+        servicoItemLivro = new ServicoItemLivro();
+        this.setLocationRelativeTo(null);
         atualizaTabela();
     }
 
     public void atualizaTabela() {
         ItemLivroTableModel tableModel = (ItemLivroTableModel) jTable1.getModel();
         tableModel.setItemLivro(new ServicoItemLivro().getListaLivros());
+        jTable1.getTableHeader().setReorderingAllowed(false); 
         jTable1.updateUI();
     }
 
@@ -48,6 +53,7 @@ public class FrameListarLivro extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Listar Livro");
+        setResizable(false);
 
         jTable1.setModel(new ItemLivroTableModel());
         jScrollPane1.setViewportView(jTable1);
@@ -87,11 +93,11 @@ public class FrameListarLivro extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addComponent(jButton4)
-                .addGap(43, 43, 43)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
+                .addGap(46, 46, 46)
                 .addComponent(jButton3)
                 .addGap(53, 53, 53))
             .addGroup(layout.createSequentialGroup()
@@ -156,7 +162,16 @@ public class FrameListarLivro extends javax.swing.JFrame {
      * @param evt
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        int linha = jTable1.getSelectedRow();
+        if(linha !=-1){
+            String isbn = jTable1.getValueAt(linha, 1).toString();
+            ItemLivro itemLivro = servicoItemLivro.pesquisaItemLivroISBN(isbn);
+            servicoItemLivro.excluiItemLivro(itemLivro);
+            atualizaTabela();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Selecione um registro para remoção", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

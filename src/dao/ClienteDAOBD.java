@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Cliente;
+import model.Emprestimo;
+import model.ItemLivro;
+import org.joda.time.LocalDate;
 
 /**
  *
@@ -85,7 +88,7 @@ public class ClienteDAOBD implements ClienteDAO {
     public List<Cliente> listar() {
         ArrayList<Cliente> array = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM cliente";
+            String sql = "SELECT * FROM cliente ORDER BY id";
             conectar(sql);
             ResultSet r = comando.executeQuery();
             while (r.next()) {
@@ -173,6 +176,29 @@ public class ClienteDAOBD implements ClienteDAO {
             Logger.getLogger(ClienteDAOBD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
+    }
+
+    public List<Emprestimo> getEmprestimosAtivos(Cliente cliente) {
+        List<Emprestimo> lista = new ArrayList<Emprestimo>();
+        try {
+            String sql = "SELECT * FROM emprestimo WHERE codCliente=? AND ativo=true";
+            conectar(sql);
+            comando.setInt(1, cliente.getId());
+            ResultSet r = comando.executeQuery();
+            while (r.next()) {
+                Cliente c = new servico.ServicoCliente().pesquisaClienteID(r.getInt("codCliente"));
+                ItemLivro itemLivro = new servico.ServicoItemLivro().pesquisaItemLivroID(r.getInt("codItemLivro"));
+                Emprestimo e = new Emprestimo(r.getInt("id"), c, itemLivro,
+                        new LocalDate(r.getDate("dataEmprestimo")),
+                        new LocalDate(r.getDate("dataDevolucao")),
+                        new LocalDate(r.getDate("devolucaoEfetiva")),
+                        r.getInt("diasAtraso"), true);
+                lista.add(e);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAOBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
     }
 
     public void conectar(String sql) throws SQLException {

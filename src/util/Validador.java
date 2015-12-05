@@ -5,6 +5,7 @@
  */
 package util;
 
+import javax.swing.JOptionPane;
 import org.joda.time.LocalDate;
 
 /**
@@ -62,15 +63,15 @@ public class Validador {
      */
     public static boolean telefoneValido(String telefone) {
         if (stringVazia(telefone)) {
-            System.out.println("Telefone não pode ser vazio.");
+            JOptionPane.showMessageDialog(null, "Telefone não pode ser vazio.", "Telefone inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (stringPossuiLetras(telefone)) {
-            System.out.println("Telefone não pode conter letras ou espaços.");
+            JOptionPane.showMessageDialog(null, "Telefone não pode conter letras ou espaços.", "Telefone inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (getTamanhoString(telefone) > 12) {
-            System.out.println("Telefone muito extenso.");
+            JOptionPane.showMessageDialog(null, "Telefone muito extenso.", "Telefone inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -85,11 +86,11 @@ public class Validador {
      */
     public static boolean matriculaValida(String matricula) {
         if (stringVazia(matricula)) {
-            System.out.println("Matrícula não pode ser vazia");
+            JOptionPane.showMessageDialog(null, "Matrícula não pode ser vazia.", "Matrícula inválida.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (getTamanhoString(matricula) > 20) {
-            System.out.println("Matrícula muito extensa.");
+            JOptionPane.showMessageDialog(null, "Matrícula muito extensa.", "Matrícula inválida.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -104,15 +105,15 @@ public class Validador {
      */
     public static boolean nomeClienteValido(String nome) {
         if (stringVazia(nome)) {
-            System.out.println("Nome não pode ser vazio");
+            JOptionPane.showMessageDialog(null, "Nome não pode ser vazio.", "Nome inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (stringPossuiNúmero(nome)) {
-            System.out.println("Nome não pode conter números.");
+            JOptionPane.showMessageDialog(null, "Nome não pode conter números.", "Nome inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (getTamanhoString(nome) > 50) {
-            System.out.println("Nome muito extenso.");
+            JOptionPane.showMessageDialog(null, "Nome muito extenso.", "Nome inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -127,15 +128,15 @@ public class Validador {
      */
     public static boolean ISBNValido(String isbn) {
         if (stringVazia(isbn)) {
-            System.out.println("ISBN não pode ser vazio.");
+            JOptionPane.showMessageDialog(null, "ISBN não pode ser vazio.", "ISBN inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (stringPossuiLetras(isbn)) {
-            System.out.println("ISBN não pode conter letras ou espaços.");
+            JOptionPane.showMessageDialog(null, "ISBN não pode conter letras ou espaços.", "ISBN inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (getTamanhoString(isbn) != 13 && getTamanhoString(isbn) != 10) {
-            System.out.println("ISBN deve possuir exatamente 10 ou 13 caracteres");
+            JOptionPane.showMessageDialog(null, "ISBN deve possuir exatamente 10 ou 13 caracteres", "ISBN inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -150,15 +151,15 @@ public class Validador {
      */
     public static boolean autorValido(String autor) {
         if (stringVazia(autor)) {
-            System.out.println("Autor não pode ser vazio.");
+            JOptionPane.showMessageDialog(null, "Autor não pode ser vazio.", "Autor inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (stringPossuiNúmero(autor)) {
-            System.out.println("Autor não pode conter números.");
+            JOptionPane.showMessageDialog(null, "Autor não pode conter números.", "Autor inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (getTamanhoString(autor) > 50) {
-            System.out.println("Autor muito extenso.");
+            JOptionPane.showMessageDialog(null, "Autor muito extenso.", "Autor inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -173,11 +174,11 @@ public class Validador {
      */
     public static boolean editoraValida(String editora) {
         if (stringVazia(editora)) {
-            System.out.println("Editora não pode ser vazio.");
+            JOptionPane.showMessageDialog(null, "Editora não pode ser vazio.", "Editora inválida.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (getTamanhoString(editora) > 50) {
-            System.out.println("Editora muito extensa.");
+            JOptionPane.showMessageDialog(null, "Editora muito extensa.", "Editora inválida.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -192,7 +193,7 @@ public class Validador {
     public static boolean anoValido(int ano) {
         int anoAtual = new LocalDate().getYear();
         if (ano > anoAtual) {
-            System.out.println("O ano de publicação não pode ser maior que " + anoAtual);
+            JOptionPane.showMessageDialog(null, "O ano de publicação não pode ser maior que " + anoAtual, "Ano inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -207,7 +208,7 @@ public class Validador {
      */
     public static boolean quantidadeValida(int quantidade) {
         if (quantidade < 1) {
-            System.out.println("A quantidade deve ser maior ou igual a 1.");
+            JOptionPane.showMessageDialog(null, "A quantidade deve ser maior ou igual a 1.", "Quantidade inválida.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -222,11 +223,11 @@ public class Validador {
      */
     public static boolean nomeLivroValido(String nome) {
         if (stringVazia(nome)) {
-            System.out.println("Nome não pode ser vazio");
+            JOptionPane.showMessageDialog(null, "Nome não pode ser vazio.", "Livro inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (getTamanhoString(nome) > 50) {
-            System.out.println("Nome muito extenso.");
+            JOptionPane.showMessageDialog(null, "Nome muito extenso.", "Livro inválido.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;

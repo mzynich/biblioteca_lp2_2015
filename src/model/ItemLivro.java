@@ -96,9 +96,14 @@ public class ItemLivro {
         }
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidadeTotal(int quantidade) {
         if (quantidade > 0) {
             this.quantidadeTotal = quantidade;
+        }
+    }
+    
+    public void setQuantidadeDisponivel(int quantidade){
+        if(quantidade>=0){
             this.quantidadeDisponivel = quantidade;
         }
     }

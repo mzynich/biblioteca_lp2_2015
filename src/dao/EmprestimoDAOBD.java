@@ -105,7 +105,7 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
         try {
             ClienteDAOBD cliente = new ClienteDAOBD();
             ItemLivroDAOBD itemLivro = new ItemLivroDAOBD();
-            String sql = "SELECT * FROM emprestimo";
+            String sql = "SELECT * FROM emprestimo ORDER BY id";
             conectar(sql);
             ResultSet r = comando.executeQuery();
             while (r.next()) {

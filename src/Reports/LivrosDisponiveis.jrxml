@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bb7f825a-d894-452b-8efe-97e061867c96">
+	<property name="ireport.zoom" value="2.1435888100000016"/>
+	<property name="ireport.x" value="138"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT livro.id,livro.isbn,livro.nome,livro.autor,livro.editora,livro.ano,itemLivro.quantidadeDisponivel,itemLivro.quantidadeTotal FROM livro
+INNER JOIN itemLivro ON(itemLivro.id = livro.id) WHERE itemLivro.quantidadeDisponivel > 0
+ORDER BY livro.id]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="isbn" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="autor" class="java.lang.String"/>
+	<field name="editora" class="java.lang.String"/>
+	<field name="ano" class="java.lang.Integer"/>
+	<field name="quantidadedisponivel" class="java.lang.Integer"/>
+	<field name="quantidadetotal" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="210" y="2" width="371" height="38" uuid="74ef8395-33fb-4328-ba32-29ae53896ef8"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de livros disponíveis]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="32" height="20" uuid="f881f906-dce4-46b9-bc48-16925115ff23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="1" width="74" height="20" uuid="4105b795-a66c-48c9-8920-bcfba788ce65"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ISBN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="126" y="1" width="177" height="20" uuid="0145639a-3d8e-4133-8950-53bc39c266bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Título]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="1" width="120" height="20" uuid="35ab0ee1-da26-468d-80b3-1d198888d655"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Autores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="0" width="134" height="20" uuid="e9c21b23-b0de-4735-8224-5c4888277d7f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Editora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="543" y="0" width="57" height="20" uuid="7483cf79-8419-4a1a-8190-f1ff8231d1a0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ano]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="610" y="1" width="71" height="20" uuid="8a2ec6a8-49a8-4b2b-a83b-e725da3e2db6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantidade disponível]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="700" y="1" width="86" height="20" uuid="e86a2a0f-8f80-4d6a-a81c-d82cd70d018a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantidade total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="32" height="20" uuid="f7fa687a-ef44-4f73-97ee-febe84381259"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="42" y="0" width="74" height="20" uuid="a5cb2211-a670-4eb2-bfcd-1708b5dd26d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{isbn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="0" width="177" height="20" uuid="c5dfad18-dcec-4a95-ad91-7a2a827c9996"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="313" y="1" width="120" height="20" uuid="12cbf544-4a7e-40dd-850f-ce0bc5b86751"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{autor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="0" width="134" height="20" uuid="61ce851e-6132-4ca1-bfee-3080830a5a9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{editora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="610" y="0" width="71" height="20" uuid="dd292983-17fa-413e-a894-82922398d802"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{quantidadedisponivel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="700" y="0" width="86" height="20" uuid="9499bc6a-a4d9-4138-aebf-f0cefc92db0d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{quantidadetotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="543" y="0" width="57" height="20" uuid="b4146e49-0fd9-4a30-9287-37d8b3dffb47"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ano}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
