@@ -70,7 +70,7 @@ public class FrameEmprestarLivro extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Confirmar");
+        jButton2.setText("Emprestar");
         jButton2.setEnabled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,10 +164,12 @@ public class FrameEmprestarLivro extends javax.swing.JFrame {
                             atualizaTabela(lista);
                             jButton2.setEnabled(true);
                         } else {
-                            JOptionPane.showMessageDialog(this, "Livro não encontrado.");
+                            JOptionPane.showMessageDialog(this, "Livro não encontrado.","Cliente não encontrado.",JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }
+            }else{
+                JOptionPane.showMessageDialog(this, "Cliente não encontrado.","Cliente não encontrado.",JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed

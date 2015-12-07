@@ -192,6 +192,10 @@ public class Validador {
      */
     public static boolean anoValido(int ano) {
         int anoAtual = new LocalDate().getYear();
+        if (ano < 0) {
+            JOptionPane.showMessageDialog(null, "O ano de publicação não pode ser negativo", "Ano inválido.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         if (ano > anoAtual) {
             JOptionPane.showMessageDialog(null, "O ano de publicação não pode ser maior que " + anoAtual, "Ano inválido.", JOptionPane.ERROR_MESSAGE);
             return false;

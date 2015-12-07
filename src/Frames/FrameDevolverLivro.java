@@ -75,7 +75,7 @@ public class FrameDevolverLivro extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Confirmar");
+        jButton3.setText("Devolver");
         jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

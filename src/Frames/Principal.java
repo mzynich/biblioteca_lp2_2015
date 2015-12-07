@@ -401,7 +401,7 @@ public class Principal extends javax.swing.JFrame {
             ItemLivro itemLivro = new servico.ServicoItemLivro().pesquisaItemLivroISBN(isbn);
             if (itemLivro != null) {
                 new servico.ServicoItemLivro().excluiItemLivro(itemLivro);
-                JOptionPane.showConfirmDialog(this, "Livro removido com sucesso.");
+                JOptionPane.showMessageDialog(this, "Livro removido com sucesso.");
             } else {
                 JOptionPane.showMessageDialog(this, "Livro não encontrado.");
             }
@@ -419,7 +419,7 @@ public class Principal extends javax.swing.JFrame {
             Cliente cliente = new servico.ServicoCliente().pesquisaClienteMatricula(matricula);
             if (cliente != null) {
                 new servico.ServicoCliente().excluir(cliente);
-                JOptionPane.showConfirmDialog(this, "Cliente removido com sucesso.");
+                JOptionPane.showMessageDialog(this, "Cliente removido com sucesso.");
             } else {
                 JOptionPane.showMessageDialog(this, "Cliente não encontrado.");
             }

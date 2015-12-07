@@ -45,9 +45,10 @@ public class ServicoEmprestimo {
         emprestimoDAOBD.livrosMaisRetirados();
     }
 
+    /*
     public void clientesMaisRetiraramLivro() {
         emprestimoDAOBD.clientesMaisRetiraramLivro();
-    }
+    }*/
 
     public void clientesMaisAtrasaram() {
         emprestimoDAOBD.clientesMaisAtrasaram();

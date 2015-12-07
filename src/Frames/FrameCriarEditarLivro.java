@@ -5,9 +5,11 @@
  */
 package Frames;
 
+import java.util.InputMismatchException;
 import javax.swing.JOptionPane;
 import model.ItemLivro;
 import model.Livro;
+import util.Validador;
 
 /**
  *
@@ -21,6 +23,8 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
 
     /**
      * Creates new form FrameCriarLivro
+     *
+     * @param framePai
      */
     public FrameCriarEditarLivro(FrameListarLivro framePai) {
         initComponents();
@@ -29,8 +33,8 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
         this.edicao = false;
         jTextField7.setEditable(false);
     }
-    
-    public FrameCriarEditarLivro(FrameListarLivro framePai,ItemLivro livro) {
+
+    public FrameCriarEditarLivro(FrameListarLivro framePai, ItemLivro livro) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.framePai = framePai;
@@ -45,7 +49,7 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
         jTextField6.setText(livro.getQuantidadeTotal() + "");
         jTextField7.setText(livro.getQuantidadeDisponivel() + "");
     }
-    
+
     /**
      * Creates new form FrameCriarLivro
      */
@@ -64,7 +68,6 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
     public FrameCriarEditarLivro(ItemLivro livro) {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.framePai = framePai;
         this.edicao = true;
         this.itemLivro = livro;
         jTextField1.setText(livro.getLivro().getId() + "");
@@ -125,11 +128,6 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
 
         jTextField1.setEditable(false);
         jTextField1.setColumns(20);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jTextField2.setColumns(20);
 
@@ -244,13 +242,10 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     /**
      * Botão cancelar
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
@@ -258,33 +253,82 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
 
     /**
      * Botão confirmar
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //Edição de livro
         if (edicao) {
             Livro livro = itemLivro.getLivro();
-            livro.setISBN(jTextField2.getText());
-            livro.setNome(jTextField3.getText());
-            livro.setAutor(jTextField4.getText());
-            livro.setEditora(jTextField5.getText());
-            livro.setAno(Integer.parseInt(jTextField8.getText()));
-            new servico.ServicoItemLivro().editaLivro(livro);
-            itemLivro.setLivro(livro);
-            itemLivro.setQuantidadeTotal(Integer.parseInt(jTextField6.getText()));
-            itemLivro.setQuantidadeDisponivel(Integer.parseInt(jTextField7.getText()));
-            new servico.ServicoItemLivro().editaItemLivro(itemLivro);
-            JOptionPane.showMessageDialog(this, "Livro editado com sucesso.");
-            this.dispose();
-            framePai.atualizaTabela();
+            if (validaCampos(true)) {
+                livro.setISBN(jTextField2.getText());
+                livro.setNome(jTextField3.getText());
+                livro.setAutor(jTextField4.getText());
+                livro.setEditora(jTextField5.getText());
+                livro.setAno(Integer.parseInt(jTextField8.getText()));
+                new servico.ServicoItemLivro().editaLivro(livro);
+                itemLivro.setLivro(livro);
+                itemLivro.setQuantidadeTotal(Integer.parseInt(jTextField6.getText()));
+                itemLivro.setQuantidadeDisponivel(Integer.parseInt(jTextField7.getText()));
+                new servico.ServicoItemLivro().editaItemLivro(itemLivro);
+                JOptionPane.showMessageDialog(this, "Livro editado com sucesso.");
+                this.dispose();
+                if (framePai != null) {
+                    framePai.atualizaTabela();
+                }
+            }
+            //Criação de livro
         } else {
-            new servico.ServicoItemLivro().addItemLivro(new ItemLivro(
-                    new Livro(jTextField2.getText(), jTextField3.getText(), jTextField4.getText(),
-                            jTextField5.getText(), Integer.parseInt(jTextField6.getText())), Integer.parseInt(jTextField6.getText())));
-            JOptionPane.showMessageDialog(this, "Livro criado com sucesso.");
-            this.dispose();
-            framePai.atualizaTabela();
+            if (validaCampos(false)) {
+                new servico.ServicoItemLivro().addItemLivro(new ItemLivro(
+                        new Livro(jTextField2.getText(), jTextField3.getText(), jTextField4.getText(),
+                                jTextField5.getText(), Integer.parseInt(jTextField6.getText())), Integer.parseInt(jTextField6.getText())));
+                JOptionPane.showMessageDialog(this, "Livro criado com sucesso.");
+                this.dispose();
+                if (framePai != null) {
+                    framePai.atualizaTabela();
+                }
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    /**
+     * Método para validar os campos JTextField desse Frame
+     *
+     * @return true se os campos forem válidos e false se não
+     */
+    private boolean validaCampos(boolean edicao) {
+        try {
+            if (edicao) {
+                if (Validador.ISBNValido(jTextField2.getText())
+                        && Validador.nomeLivroValido(jTextField3.getText())
+                        && Validador.autorValido(jTextField4.getText())
+                        && Validador.editoraValida(jTextField5.getText())
+                        && Validador.anoValido(Integer.parseInt(jTextField8.getText()))
+                        && Validador.quantidadeValida(Integer.parseInt(jTextField6.getText()))
+                        && Validador.quantidadeValida(Integer.parseInt(jTextField7.getText()))) {
+                    if (Integer.parseInt(jTextField7.getText()) <= Integer.parseInt(jTextField6.getText())) {
+                        return true;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Quantidade disponível deve ser menor ou igual à quantidade total.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        return false;
+                    }
+                }
+            } else {
+                if (Validador.ISBNValido(jTextField2.getText())
+                        && Validador.nomeLivroValido(jTextField3.getText())
+                        && Validador.autorValido(jTextField4.getText())
+                        && Validador.editoraValida(jTextField5.getText())
+                        && Validador.anoValido(Integer.parseInt(jTextField8.getText()))
+                        && Validador.quantidadeValida(Integer.parseInt(jTextField6.getText()))) {
+                    return true;
+                }
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ano e quantidades devem ser números.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
 
     /**
      * @param args the command line arguments
@@ -300,16 +344,21 @@ public class FrameCriarEditarLivro extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameCriarEditarLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCriarEditarLivro.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameCriarEditarLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCriarEditarLivro.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameCriarEditarLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCriarEditarLivro.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameCriarEditarLivro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCriarEditarLivro.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

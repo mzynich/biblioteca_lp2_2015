@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bb7f825a-d894-452b-8efe-97e061867c96">
 	<property name="ireport.zoom" value="2.1435888100000016"/>
-	<property name="ireport.x" value="216"/>
+	<property name="ireport.x" value="927"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
 		<![CDATA[SELECT emprestimo.id,cliente.matricula,cliente.nome,livro.nome AS livro,emprestimo.dataEmprestimo,emprestimo.dataDevolucao,emprestimo.devolucaoEfetiva,emprestimo.diasAtraso,emprestimo.ativo
@@ -43,14 +43,14 @@ ORDER BY emprestimo.id]]>
 				<text><![CDATA[ID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="1" width="42" height="20" uuid="707c4bf1-625e-4a56-b220-b94ed0e925e7"/>
+				<reportElement x="30" y="1" width="52" height="20" uuid="707c4bf1-625e-4a56-b220-b94ed0e925e7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Matrícula]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="82" y="1" width="75" height="20" uuid="b4c2b83d-7858-4830-ad45-e0263d300130"/>
+				<reportElement x="82" y="1" width="87" height="20" uuid="b4c2b83d-7858-4830-ad45-e0263d300130"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -64,14 +64,14 @@ ORDER BY emprestimo.id]]>
 				<text><![CDATA[Nome do Livro]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="398" y="1" width="91" height="20" uuid="28e53882-1756-4650-8965-c01e8d4f2ce0"/>
+				<reportElement x="387" y="1" width="102" height="20" uuid="28e53882-1756-4650-8965-c01e8d4f2ce0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data de empréstimo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="497" y="1" width="84" height="20" uuid="2d194bd9-06a7-4933-a1b1-938421303889"/>
+				<reportElement x="489" y="1" width="92" height="20" uuid="2d194bd9-06a7-4933-a1b1-938421303889"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -85,7 +85,7 @@ ORDER BY emprestimo.id]]>
 				<text><![CDATA[Devolução efetiva]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="692" y="1" width="68" height="20" uuid="a3ac98e4-cd82-4f34-b7cf-ad35b6f8a312"/>
+				<reportElement x="692" y="1" width="79" height="20" uuid="a3ac98e4-cd82-4f34-b7cf-ad35b6f8a312"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -108,12 +108,12 @@ ORDER BY emprestimo.id]]>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="30" y="3" width="42" height="20" uuid="7047dd63-d729-4c4c-ae57-34d16fd76513"/>
+				<reportElement x="30" y="3" width="52" height="20" uuid="7047dd63-d729-4c4c-ae57-34d16fd76513"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="82" y="3" width="75" height="20" uuid="492fbaf9-68aa-4a0e-849a-402033f9a4e9"/>
+				<reportElement x="82" y="3" width="87" height="20" uuid="492fbaf9-68aa-4a0e-849a-402033f9a4e9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
@@ -123,7 +123,7 @@ ORDER BY emprestimo.id]]>
 				<textFieldExpression><![CDATA[$F{livro}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="398" y="3" width="91" height="20" uuid="7f9b9a64-895d-4287-a54a-2287d3bd1805"/>
+				<reportElement x="387" y="3" width="102" height="20" uuid="7f9b9a64-895d-4287-a54a-2287d3bd1805"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{dataemprestimo}]]></textFieldExpression>
 			</textField>

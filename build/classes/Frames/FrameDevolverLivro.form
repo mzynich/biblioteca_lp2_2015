@@ -124,7 +124,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Confirmar"/>
+        <Property name="text" type="java.lang.String" value="Devolver"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>

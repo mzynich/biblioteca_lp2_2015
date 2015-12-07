@@ -19,9 +19,6 @@ import model.Cliente;
 import model.Emprestimo;
 import model.ItemLivro;
 import org.joda.time.LocalDate;
-import servico.ServicoItemLivro;
-import util.Console;
-import util.Validador;
 
 /**
  *
@@ -263,6 +260,7 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
         }
     }
 
+    /*
     public void clientesMaisRetiraramLivro() {
         String livro = Console.scanString("Nome do livro: ");
         if (Validador.nomeLivroValido(livro)) {
@@ -302,7 +300,7 @@ public class EmprestimoDAOBD implements EmprestimoDAO {
                 }
             }
         }
-    }
+    }*/
 
     public void clientesMaisAtrasaram() {
         try {

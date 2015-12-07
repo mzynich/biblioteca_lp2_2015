@@ -7,6 +7,7 @@ package Frames;
 
 import javax.swing.JOptionPane;
 import model.Cliente;
+import util.Validador;
 
 /**
  *
@@ -40,6 +41,7 @@ public class FrameCriarEditarCliente extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.edicao = true;
+        this.framePai = framePai;
         this.cliente = cliente;
         jTextField1.setText(cliente.getId() + "");
         jTextField2.setText(cliente.getMatricula());
@@ -175,20 +177,42 @@ public class FrameCriarEditarCliente extends javax.swing.JFrame {
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (edicao) {
-            cliente.setMatricula(jTextField2.getText());
-            cliente.setNome(jTextField3.getText());
-            cliente.setTelefone(jTextField4.getText());
-            new servico.ServicoCliente().editarCliente(cliente);
-            JOptionPane.showMessageDialog(this, "Cliente editado com sucesso.");
-            this.dispose();
-            framePai.atualizaTabela();
+            if (validaDados()) {
+                cliente.setMatricula(jTextField2.getText());
+                cliente.setNome(jTextField3.getText());
+                cliente.setTelefone(jTextField4.getText());
+                new servico.ServicoCliente().editarCliente(cliente);
+                JOptionPane.showMessageDialog(this, "Cliente editado com sucesso.");
+                this.dispose();
+                if (framePai != null) {
+                    framePai.atualizaTabela();
+                }
+            }
         } else {
-            new servico.ServicoCliente().addCliente(new Cliente(jTextField2.getText(), jTextField3.getText(), jTextField4.getText()));
-            JOptionPane.showMessageDialog(this, "Cliente criado com sucesso.");
-            this.dispose();
-            framePai.atualizaTabela();
+            if (validaDados()) {
+                new servico.ServicoCliente().addCliente(new Cliente(jTextField2.getText(), jTextField3.getText(), jTextField4.getText()));
+                JOptionPane.showMessageDialog(this, "Cliente criado com sucesso.");
+                this.dispose();
+                if (framePai != null) {
+                    framePai.atualizaTabela();
+                }
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    /**
+     * Método para validar os campos JTextField desse Frame
+     *
+     * @return true se os campos forem válidos e false se não
+     */
+    private boolean validaDados() {
+        if (Validador.matriculaValida(jTextField2.getText())
+                && Validador.nomeClienteValido(jTextField3.getText())
+                && Validador.telefoneValido(jTextField4.getText())) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Botão cancelar
