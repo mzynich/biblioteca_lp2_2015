@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Pacote com tarefas utilitárias
  */
 package util;
 
@@ -9,6 +7,7 @@ import javax.swing.JOptionPane;
 import org.joda.time.LocalDate;
 
 /**
+ * Classe auxiliar para validar dados do projeto
  *
  * @author mzynich
  */

@@ -3,20 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/servico/ServicoEmprestimo.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/biblioteca/Biblioteca.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/interfaces/EmprestimoDAO.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/dao/EmprestimoDAOBD.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/interfaces/LivroDAO.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/Frames/Principal.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/servico/ServicoCliente.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/dao/ClienteDAOBD.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/banco/ConnectionFactory.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/dao/LivroDAOBD.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/sqlBiblioteca.sql</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/servico/ServicoItemLivro.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/interfaces/ClienteDAO.java</file>
-            <file>file:/C:/Users/max/Dropbox/NetBeans/biblioteca/src/dao/ItemLivroDAOBD.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/servico/ServicoItemLivro.java</file>
+            <file>file:/C:/Users/mzynich/Dropbox/NetBeans/biblioteca/src/servico/ServicoEmprestimo.java</file>
         </group>
     </open-files>
 </project-private>

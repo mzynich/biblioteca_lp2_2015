@@ -21,6 +21,8 @@ public class FrameCriarEditarCliente extends javax.swing.JFrame {
 
     /**
      * Creates new form FrameCriarEditarCliente
+     *
+     * @param framePai
      */
     public FrameCriarEditarCliente(FrameListarCliente framePai) {
         initComponents();

@@ -14,6 +14,7 @@ import model.ItemLivro;
 import org.joda.time.LocalDate;
 
 /**
+ * Classe com operações de empréstimo.
  *
  * @author max
  */
@@ -21,6 +22,9 @@ public class ServicoEmprestimo {
 
     private EmprestimoDAOBD emprestimoDAOBD;
 
+    /**
+     * 
+     */
     public ServicoEmprestimo() {
         this.emprestimoDAOBD = new EmprestimoDAOBD();
     }
@@ -46,10 +50,9 @@ public class ServicoEmprestimo {
     }
 
     /*
-    public void clientesMaisRetiraramLivro() {
-        emprestimoDAOBD.clientesMaisRetiraramLivro();
-    }*/
-
+     public void clientesMaisRetiraramLivro() {
+     emprestimoDAOBD.clientesMaisRetiraramLivro();
+     }*/
     public void clientesMaisAtrasaram() {
         emprestimoDAOBD.clientesMaisAtrasaram();
     }
@@ -64,18 +67,18 @@ public class ServicoEmprestimo {
                 + emprestimo.getDataDevolucao().getMonthOfYear() + "/"
                 + emprestimo.getDataDevolucao().getYear());
     }
-    
-    public void devolver(Emprestimo emprestimo){
+
+    public void devolver(Emprestimo emprestimo) {
         emprestimo.setDevolucaoEfetiva(new LocalDate());
         emprestimo.setAtivo(false);
         emprestimo.getItemLivro().adicionarQtdLivroDisponivel(1);
         editarEmprestimo(emprestimo);
-        if(emprestimo.getDiasAtraso()>0){
-            JOptionPane.showMessageDialog(null, "Devolução efetuada com sucesso. Dias de atraso: "+emprestimo.getDiasAtraso());
-        }else{
+        if (emprestimo.getDiasAtraso() > 0) {
+            JOptionPane.showMessageDialog(null, "Devolução efetuada com sucesso. Dias de atraso: " + emprestimo.getDiasAtraso());
+        } else {
             JOptionPane.showMessageDialog(null, "Devolução efetuada com sucesso.");
         }
-        
+
     }
 
     public Emprestimo getEmprestimoID(int selecionado) {
